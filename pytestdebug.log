@@ -1,0 +1,1554 @@
+versions pytest-8.3.4, python-3.12.0.final.0
+invocation_dir=C:\stuff\projects\demo-app
+cwd=C:\stuff\projects\demo-app
+args=('--trace-config', '--debug')
+
+  pytest_cmdline_main [hook]
+      config: <_pytest.config.Config object at 0x00000167E8F423F0>
+    pytest_plugin_registered [hook]
+        plugin: <Session  exitstatus='<UNSET>' testsfailed=0 testscollected=0>
+        plugin_name: session
+        manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+    finish pytest_plugin_registered --> [] [hook]
+    pytest_configure [hook]
+        config: <_pytest.config.Config object at 0x00000167E8F423F0>
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.cacheprovider.LFPlugin object at 0x00000167E8DD9160>
+          plugin_name: lfplugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.cacheprovider.NFPlugin object at 0x00000167EB57C1D0>
+          plugin_name: nfplugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+    early skip of rewriting module: faulthandler [assertion]
+      pytest_plugin_registered [hook]
+          plugin: <class '_pytest.legacypath.LegacyTmpdirPlugin'>
+          plugin_name: legacypath-tmpdir
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+    early skip of rewriting module: pdb [assertion]
+    early skip of rewriting module: cmd [assertion]
+    early skip of rewriting module: code [assertion]
+    early skip of rewriting module: codeop [assertion]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+          plugin_name: 1545797544864
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.config.Config object at 0x00000167E8F423F0>
+          plugin_name: pytestconfig
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.mark' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\mark\\__init__.py'>
+          plugin_name: mark
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.main' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\main.py'>
+          plugin_name: main
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.runner' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\runner.py'>
+          plugin_name: runner
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.fixtures' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\fixtures.py'>
+          plugin_name: fixtures
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.helpconfig' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\helpconfig.py'>
+          plugin_name: helpconfig
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.python' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\python.py'>
+          plugin_name: python
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.terminal' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\terminal.py'>
+          plugin_name: terminal
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.debugging' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\debugging.py'>
+          plugin_name: debugging
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.unittest' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\unittest.py'>
+          plugin_name: unittest
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.capture' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\capture.py'>
+          plugin_name: capture
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.skipping' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\skipping.py'>
+          plugin_name: skipping
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.legacypath' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\legacypath.py'>
+          plugin_name: legacypath
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.tmpdir' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\tmpdir.py'>
+          plugin_name: tmpdir
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.monkeypatch' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\monkeypatch.py'>
+          plugin_name: monkeypatch
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.recwarn' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\recwarn.py'>
+          plugin_name: recwarn
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.pastebin' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\pastebin.py'>
+          plugin_name: pastebin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.assertion' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\assertion\\__init__.py'>
+          plugin_name: assertion
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.junitxml' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\junitxml.py'>
+          plugin_name: junitxml
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.doctest' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\doctest.py'>
+          plugin_name: doctest
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.cacheprovider' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\cacheprovider.py'>
+          plugin_name: cacheprovider
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.freeze_support' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\freeze_support.py'>
+          plugin_name: freeze_support
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.setuponly' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\setuponly.py'>
+          plugin_name: setuponly
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.setupplan' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\setupplan.py'>
+          plugin_name: setupplan
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.stepwise' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\stepwise.py'>
+          plugin_name: stepwise
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.warnings' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\warnings.py'>
+          plugin_name: warnings
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.logging' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\logging.py'>
+          plugin_name: logging
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.reports' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\reports.py'>
+          plugin_name: reports
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.python_path' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\python_path.py'>
+          plugin_name: python_path
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.unraisableexception' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\unraisableexception.py'>
+          plugin_name: unraisableexception
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.threadexception' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\threadexception.py'>
+          plugin_name: threadexception
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.faulthandler' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\faulthandler.py'>
+          plugin_name: faulthandler
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <CaptureManager _method='fd' _global_capturing=<MultiCapture out=<FDCapture 1 oldfd=9 _state='suspended' tmpfile=<_io.TextIOWrapper name='<tempfile._TemporaryFileWrapper object at 0x00000167EB57DDF0>' mode='r+' encoding='utf-8'>> err=<FDCapture 2 oldfd=11 _state='suspended' tmpfile=<_io.TextIOWrapper name='<tempfile._TemporaryFileWrapper object at 0x00000167EB5716D0>' mode='r+' encoding='utf-8'>> in_=<FDCapture 0 oldfd=7 _state='started' tmpfile=<_io.TextIOWrapper name='nul' mode='r' encoding='utf-8'>> _state='suspended' _in_suspended=False> _capture_fixture=None>
+          plugin_name: capturemanager
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>
+          plugin_name: session
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.cacheprovider.LFPlugin object at 0x00000167E8DD9160>
+          plugin_name: lfplugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.cacheprovider.NFPlugin object at 0x00000167EB57C1D0>
+          plugin_name: nfplugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <class '_pytest.legacypath.LegacyTmpdirPlugin'>
+          plugin_name: legacypath-tmpdir
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.terminal.TerminalReporter object at 0x00000167EB59F7D0>
+          plugin_name: terminalreporter
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.logging.LoggingPlugin object at 0x00000167EB3EE9F0>
+          plugin_name: logging-plugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+    finish pytest_configure --> [] [hook]
+    pytest_sessionstart [hook]
+        session: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+          plugin_name: 1545797544864
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.config.Config object at 0x00000167E8F423F0>
+          plugin_name: pytestconfig
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.mark' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\mark\\__init__.py'>
+          plugin_name: mark
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.main' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\main.py'>
+          plugin_name: main
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.runner' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\runner.py'>
+          plugin_name: runner
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.fixtures' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\fixtures.py'>
+          plugin_name: fixtures
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.helpconfig' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\helpconfig.py'>
+          plugin_name: helpconfig
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.python' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\python.py'>
+          plugin_name: python
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.terminal' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\terminal.py'>
+          plugin_name: terminal
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.debugging' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\debugging.py'>
+          plugin_name: debugging
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.unittest' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\unittest.py'>
+          plugin_name: unittest
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.capture' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\capture.py'>
+          plugin_name: capture
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.skipping' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\skipping.py'>
+          plugin_name: skipping
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.legacypath' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\legacypath.py'>
+          plugin_name: legacypath
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.tmpdir' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\tmpdir.py'>
+          plugin_name: tmpdir
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.monkeypatch' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\monkeypatch.py'>
+          plugin_name: monkeypatch
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.recwarn' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\recwarn.py'>
+          plugin_name: recwarn
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.pastebin' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\pastebin.py'>
+          plugin_name: pastebin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.assertion' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\assertion\\__init__.py'>
+          plugin_name: assertion
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.junitxml' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\junitxml.py'>
+          plugin_name: junitxml
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.doctest' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\doctest.py'>
+          plugin_name: doctest
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.cacheprovider' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\cacheprovider.py'>
+          plugin_name: cacheprovider
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.freeze_support' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\freeze_support.py'>
+          plugin_name: freeze_support
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.setuponly' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\setuponly.py'>
+          plugin_name: setuponly
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.setupplan' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\setupplan.py'>
+          plugin_name: setupplan
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.stepwise' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\stepwise.py'>
+          plugin_name: stepwise
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.warnings' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\warnings.py'>
+          plugin_name: warnings
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.logging' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\logging.py'>
+          plugin_name: logging
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.reports' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\reports.py'>
+          plugin_name: reports
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.python_path' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\python_path.py'>
+          plugin_name: python_path
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.unraisableexception' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\unraisableexception.py'>
+          plugin_name: unraisableexception
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.threadexception' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\threadexception.py'>
+          plugin_name: threadexception
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <module '_pytest.faulthandler' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\faulthandler.py'>
+          plugin_name: faulthandler
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <CaptureManager _method='fd' _global_capturing=<MultiCapture out=<FDCapture 1 oldfd=9 _state='suspended' tmpfile=<_io.TextIOWrapper name='<tempfile._TemporaryFileWrapper object at 0x00000167EB57DDF0>' mode='r+' encoding='utf-8'>> err=<FDCapture 2 oldfd=11 _state='suspended' tmpfile=<_io.TextIOWrapper name='<tempfile._TemporaryFileWrapper object at 0x00000167EB5716D0>' mode='r+' encoding='utf-8'>> in_=<FDCapture 0 oldfd=7 _state='started' tmpfile=<_io.TextIOWrapper name='nul' mode='r' encoding='utf-8'>> _state='suspended' _in_suspended=False> _capture_fixture=None>
+          plugin_name: capturemanager
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>
+          plugin_name: session
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.cacheprovider.LFPlugin object at 0x00000167E8DD9160>
+          plugin_name: lfplugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.cacheprovider.NFPlugin object at 0x00000167EB57C1D0>
+          plugin_name: nfplugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <class '_pytest.legacypath.LegacyTmpdirPlugin'>
+          plugin_name: legacypath-tmpdir
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.terminal.TerminalReporter object at 0x00000167EB59F7D0>
+          plugin_name: terminalreporter
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.logging.LoggingPlugin object at 0x00000167EB3EE9F0>
+          plugin_name: logging-plugin
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_plugin_registered [hook]
+          plugin: <_pytest.fixtures.FixtureManager object at 0x00000167EB573110>
+          plugin_name: funcmanage
+          manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+      finish pytest_plugin_registered --> [] [hook]
+      pytest_report_header [hook]
+          config: <_pytest.config.Config object at 0x00000167E8F423F0>
+          start_path: C:\stuff\projects\demo-app
+          startdir: C:\stuff\projects\demo-app
+      finish pytest_report_header --> [['rootdir: C:\\stuff\\projects\\demo-app'], ['using: pytest-8.3.4', 'active plugins:', '    1545797544864       : <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>', '    pytestconfig        : <_pytest.config.Config object at 0x00000167E8F423F0>', '    mark                : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\mark\\__init__.py', '    main                : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\main.py', '    runner              : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\runner.py', '    fixtures            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\fixtures.py', '    helpconfig          : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\helpconfig.py', '    python              : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\python.py', '    terminal            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\terminal.py', '    debugging           : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\debugging.py', '    unittest            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\unittest.py', '    capture             : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\capture.py', '    skipping            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\skipping.py', '    legacypath          : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\legacypath.py', '    tmpdir              : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\tmpdir.py', '    monkeypatch         : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\monkeypatch.py', '    recwarn             : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\recwarn.py', '    pastebin            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\pastebin.py', '    assertion           : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\assertion\\__init__.py', '    junitxml            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\junitxml.py', '    doctest             : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\doctest.py', '    cacheprovider       : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\cacheprovider.py', '    freeze_support      : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\freeze_support.py', '    setuponly           : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\setuponly.py', '    setupplan           : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\setupplan.py', '    stepwise            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\stepwise.py', '    warnings            : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\warnings.py', '    logging             : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\logging.py', '    reports             : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\reports.py', '    python_path         : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\python_path.py', '    unraisableexception : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\unraisableexception.py', '    threadexception     : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\threadexception.py', '    faulthandler        : C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\faulthandler.py', "    capturemanager      : <CaptureManager _method='fd' _global_capturing=<MultiCapture out=<FDCapture 1 oldfd=9 _state='suspended' tmpfile=<_io.TextIOWrapper name='<tempfile._TemporaryFileWrapper object at 0x00000167EB57DDF0>' mode='r+' encoding='utf-8'>> err=<FDCapture 2 oldfd=11 _state='suspended' tmpfile=<_io.TextIOWrapper name='<tempfile._TemporaryFileWrapper object at 0x00000167EB5716D0>' mode='r+' encoding='utf-8'>> in_=<FDCapture 0 oldfd=7 _state='started' tmpfile=<_io.TextIOWrapper name='nul' mode='r' encoding='utf-8'>> _state='suspended' _in_suspended=False> _capture_fixture=None>", '    session             : <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>', '    lfplugin            : <_pytest.cacheprovider.LFPlugin object at 0x00000167E8DD9160>', '    nfplugin            : <_pytest.cacheprovider.NFPlugin object at 0x00000167EB57C1D0>', "    legacypath-tmpdir   : <class '_pytest.legacypath.LegacyTmpdirPlugin'>", '    terminalreporter    : <_pytest.terminal.TerminalReporter object at 0x00000167EB59F7D0>', '    logging-plugin      : <_pytest.logging.LoggingPlugin object at 0x00000167EB3EE9F0>', '    funcmanage          : <_pytest.fixtures.FixtureManager object at 0x00000167EB573110>']] [hook]
+    finish pytest_sessionstart --> [] [hook]
+    pytest_collection [hook]
+        session: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>
+    perform_collect <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0> ['C:\\stuff\\projects\\demo-app'] [collection]
+        pytest_collectstart [hook]
+            collector: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>
+        finish pytest_collectstart --> [] [hook]
+        pytest_make_collect_report [hook]
+            collector: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>
+        processing argument CollectionArgument(path=WindowsPath('C:/stuff/projects/demo-app'), parts=[], module_name=None) [collection]
+            pytest_collect_directory [hook]
+                path: C:\stuff\projects\demo-app
+                parent: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=0 testscollected=0>
+            finish pytest_collect_directory --> <Package demo-app> [hook]
+        finish pytest_make_collect_report --> <CollectReport '' lenresult=1 outcome='passed'> [hook]
+        pytest_collectreport [hook]
+            report: <CollectReport '' lenresult=1 outcome='passed'>
+        finish pytest_collectreport --> [] [hook]
+    genitems <Package demo-app> [collection]
+      pytest_collectstart [hook]
+          collector: <Package demo-app>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Package demo-app>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\__init__.py
+            path: C:\stuff\projects\demo-app\__init__.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package demo-app>
+            file_path: C:\stuff\projects\demo-app\__init__.py
+            path: C:\stuff\projects\demo-app\__init__.py
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\.aws-sam
+            path: C:\stuff\projects\demo-app\.aws-sam
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\.gitignore
+            path: C:\stuff\projects\demo-app\.gitignore
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package demo-app>
+            file_path: C:\stuff\projects\demo-app\.gitignore
+            path: C:\stuff\projects\demo-app\.gitignore
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\.idea
+            path: C:\stuff\projects\demo-app\.idea
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\.pytest_cache
+            path: C:\stuff\projects\demo-app\.pytest_cache
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\README.md
+            path: C:\stuff\projects\demo-app\README.md
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package demo-app>
+            file_path: C:\stuff\projects\demo-app\README.md
+            path: C:\stuff\projects\demo-app\README.md
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\audio
+            path: C:\stuff\projects\demo-app\audio
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\audio
+            parent: <Package demo-app>
+        finish pytest_collect_directory --> <Package audio> [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\events
+            path: C:\stuff\projects\demo-app\events
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\events
+            parent: <Package demo-app>
+        finish pytest_collect_directory --> <Dir events> [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\pytestdebug.log
+            path: C:\stuff\projects\demo-app\pytestdebug.log
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package demo-app>
+            file_path: C:\stuff\projects\demo-app\pytestdebug.log
+            path: C:\stuff\projects\demo-app\pytestdebug.log
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\samconfig.toml
+            path: C:\stuff\projects\demo-app\samconfig.toml
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package demo-app>
+            file_path: C:\stuff\projects\demo-app\samconfig.toml
+            path: C:\stuff\projects\demo-app\samconfig.toml
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\template.yaml
+            path: C:\stuff\projects\demo-app\template.yaml
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package demo-app>
+            file_path: C:\stuff\projects\demo-app\template.yaml
+            path: C:\stuff\projects\demo-app\template.yaml
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests
+            path: C:\stuff\projects\demo-app\tests
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tests
+            parent: <Package demo-app>
+        finish pytest_collect_directory --> <Dir tests> [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tracks
+            path: C:\stuff\projects\demo-app\tracks
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tracks
+            parent: <Package demo-app>
+        finish pytest_collect_directory --> <Package tracks> [hook]
+      finish pytest_make_collect_report --> <CollectReport '.' lenresult=4 outcome='passed'> [hook]
+    genitems <Package audio> [collection]
+      pytest_collectstart [hook]
+          collector: <Package audio>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Package audio>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\audio\__init__.py
+            path: C:\stuff\projects\demo-app\audio\__init__.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package audio>
+            file_path: C:\stuff\projects\demo-app\audio\__init__.py
+            path: C:\stuff\projects\demo-app\audio\__init__.py
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\audio\__pycache__
+            path: C:\stuff\projects\demo-app\audio\__pycache__
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\audio\upload_audio.py
+            path: C:\stuff\projects\demo-app\audio\upload_audio.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package audio>
+            file_path: C:\stuff\projects\demo-app\audio\upload_audio.py
+            path: C:\stuff\projects\demo-app\audio\upload_audio.py
+        finish pytest_collect_file --> [] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'audio' lenresult=0 outcome='passed'> [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'audio' lenresult=0 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+    genitems <Dir events> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir events>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir events>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\events\event.json
+            path: C:\stuff\projects\demo-app\events\event.json
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Dir events>
+            file_path: C:\stuff\projects\demo-app\events\event.json
+            path: C:\stuff\projects\demo-app\events\event.json
+        finish pytest_collect_file --> [] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'events' lenresult=0 outcome='passed'> [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'events' lenresult=0 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+    genitems <Dir tests> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir tests>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir tests>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\integration
+            path: C:\stuff\projects\demo-app\tests\integration
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tests\integration
+            parent: <Dir tests>
+        finish pytest_collect_directory --> <Dir integration> [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit
+            path: C:\stuff\projects\demo-app\tests\unit
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tests\unit
+            parent: <Dir tests>
+        finish pytest_collect_directory --> <Dir unit> [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests' lenresult=2 outcome='passed'> [hook]
+    genitems <Dir integration> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir integration>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir integration>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\integration\audio
+            path: C:\stuff\projects\demo-app\tests\integration\audio
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tests\integration\audio
+            parent: <Dir integration>
+        finish pytest_collect_directory --> <Dir audio> [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/integration' lenresult=1 outcome='passed'> [hook]
+    genitems <Dir audio> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir audio>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir audio>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\integration\audio\__pycache__
+            path: C:\stuff\projects\demo-app\tests\integration\audio\__pycache__
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\integration\audio\test_integration_upload_audio.py
+            path: C:\stuff\projects\demo-app\tests\integration\audio\test_integration_upload_audio.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Dir audio>
+            file_path: C:\stuff\projects\demo-app\tests\integration\audio\test_integration_upload_audio.py
+            path: C:\stuff\projects\demo-app\tests\integration\audio\test_integration_upload_audio.py
+          pytest_pycollect_makemodule [hook]
+              parent: <Dir audio>
+              module_path: C:\stuff\projects\demo-app\tests\integration\audio\test_integration_upload_audio.py
+              path: C:\stuff\projects\demo-app\tests\integration\audio\test_integration_upload_audio.py
+          finish pytest_pycollect_makemodule --> <Module test_integration_upload_audio.py> [hook]
+        finish pytest_collect_file --> [<Module test_integration_upload_audio.py>] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/integration/audio' lenresult=1 outcome='passed'> [hook]
+    genitems <Module test_integration_upload_audio.py> [collection]
+      pytest_collectstart [hook]
+          collector: <Module test_integration_upload_audio.py>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Module test_integration_upload_audio.py>
+      find_module called for: test_integration_upload_audio [assertion]
+      matched test file 'C:\\stuff\\projects\\demo-app\\tests\\integration\\audio\\test_integration_upload_audio.py' [assertion]
+      found cached rewritten pyc for C:\stuff\projects\demo-app\tests\integration\audio\test_integration_upload_audio.py [assertion]
+      early skip of rewriting module: boto3 [assertion]
+      early skip of rewriting module: boto3.compat [assertion]
+      early skip of rewriting module: boto3.exceptions [assertion]
+      early skip of rewriting module: botocore [assertion]
+      early skip of rewriting module: botocore.exceptions [assertion]
+      early skip of rewriting module: botocore.vendored [assertion]
+      early skip of rewriting module: botocore.vendored.requests [assertion]
+      early skip of rewriting module: botocore.vendored.requests.exceptions [assertion]
+      early skip of rewriting module: botocore.vendored.requests.packages [assertion]
+      early skip of rewriting module: botocore.vendored.requests.packages.urllib3 [assertion]
+      early skip of rewriting module: botocore.vendored.requests.packages.urllib3.exceptions [assertion]
+      early skip of rewriting module: boto3.session [assertion]
+      early skip of rewriting module: botocore.session [assertion]
+      early skip of rewriting module: botocore.client [assertion]
+      early skip of rewriting module: botocore.waiter [assertion]
+      early skip of rewriting module: jmespath [assertion]
+      early skip of rewriting module: jmespath.parser [assertion]
+      early skip of rewriting module: jmespath.lexer [assertion]
+      early skip of rewriting module: jmespath.exceptions [assertion]
+      early skip of rewriting module: jmespath.compat [assertion]
+      early skip of rewriting module: jmespath.ast [assertion]
+      early skip of rewriting module: jmespath.visitor [assertion]
+      early skip of rewriting module: jmespath.functions [assertion]
+      early skip of rewriting module: botocore.docs [assertion]
+      early skip of rewriting module: botocore.docs.service [assertion]
+      early skip of rewriting module: botocore.docs.bcdoc [assertion]
+      early skip of rewriting module: botocore.docs.bcdoc.restdoc [assertion]
+      early skip of rewriting module: botocore.compat [assertion]
+      early skip of rewriting module: http [assertion]
+      early skip of rewriting module: http.client [assertion]
+      early skip of rewriting module: email.parser [assertion]
+      early skip of rewriting module: email.feedparser [assertion]
+      early skip of rewriting module: ssl [assertion]
+      early skip of rewriting module: _ssl [assertion]
+      early skip of rewriting module: botocore.vendored.six [assertion]
+      early skip of rewriting module: dateutil [assertion]
+      early skip of rewriting module: dateutil._version [assertion]
+      early skip of rewriting module: dateutil.tz [assertion]
+      early skip of rewriting module: dateutil.tz.tz [assertion]
+      early skip of rewriting module: six [assertion]
+      early skip of rewriting module: six.moves [assertion]
+      early skip of rewriting module: dateutil.tz._common [assertion]
+      early skip of rewriting module: dateutil.tz._factories [assertion]
+      early skip of rewriting module: dateutil.tz.win [assertion]
+      early skip of rewriting module: urllib3 [assertion]
+      early skip of rewriting module: urllib3.exceptions [assertion]
+      early skip of rewriting module: urllib3._base_connection [assertion]
+      early skip of rewriting module: urllib3.util [assertion]
+      early skip of rewriting module: urllib3.util.connection [assertion]
+      early skip of rewriting module: urllib3.util.timeout [assertion]
+      early skip of rewriting module: urllib3.util.request [assertion]
+      early skip of rewriting module: urllib3.util.util [assertion]
+      early skip of rewriting module: brotlicffi [assertion]
+      early skip of rewriting module: brotli [assertion]
+      early skip of rewriting module: zstandard [assertion]
+      early skip of rewriting module: urllib3.util.response [assertion]
+      early skip of rewriting module: urllib3.util.retry [assertion]
+      early skip of rewriting module: urllib3.util.ssl_ [assertion]
+      early skip of rewriting module: hmac [assertion]
+      early skip of rewriting module: urllib3.util.url [assertion]
+      early skip of rewriting module: urllib3.util.ssltransport [assertion]
+      early skip of rewriting module: urllib3.util.wait [assertion]
+      early skip of rewriting module: urllib3._collections [assertion]
+      early skip of rewriting module: urllib3._version [assertion]
+      early skip of rewriting module: urllib3.connectionpool [assertion]
+      early skip of rewriting module: queue [assertion]
+      early skip of rewriting module: _queue [assertion]
+      early skip of rewriting module: urllib3._request_methods [assertion]
+      early skip of rewriting module: urllib3.filepost [assertion]
+      early skip of rewriting module: urllib3.fields [assertion]
+      early skip of rewriting module: mimetypes [assertion]
+      early skip of rewriting module: urllib3.response [assertion]
+      early skip of rewriting module: brotlicffi [assertion]
+      early skip of rewriting module: brotli [assertion]
+      early skip of rewriting module: zstandard [assertion]
+      early skip of rewriting module: urllib3.connection [assertion]
+      early skip of rewriting module: urllib3.http2 [assertion]
+      early skip of rewriting module: urllib3.http2.probe [assertion]
+      early skip of rewriting module: urllib3.util.ssl_match_hostname [assertion]
+      early skip of rewriting module: urllib3.util.proxy [assertion]
+      early skip of rewriting module: urllib3.poolmanager [assertion]
+      early skip of rewriting module: xml.etree.cElementTree [assertion]
+      early skip of rewriting module: awscrt [assertion]
+      early skip of rewriting module: gzip [assertion]
+      early skip of rewriting module: botocore.docs.bcdoc.docstringparser [assertion]
+      early skip of rewriting module: html [assertion]
+      early skip of rewriting module: html.entities [assertion]
+      early skip of rewriting module: html.parser [assertion]
+      early skip of rewriting module: _markupbase [assertion]
+      early skip of rewriting module: botocore.docs.bcdoc.style [assertion]
+      early skip of rewriting module: botocore.docs.client [assertion]
+      early skip of rewriting module: botocore.docs.example [assertion]
+      early skip of rewriting module: botocore.docs.shape [assertion]
+      early skip of rewriting module: botocore.utils [assertion]
+      early skip of rewriting module: urllib.request [assertion]
+      early skip of rewriting module: urllib.error [assertion]
+      early skip of rewriting module: urllib.response [assertion]
+      early skip of rewriting module: nturl2path [assertion]
+      early skip of rewriting module: dateutil.parser [assertion]
+      early skip of rewriting module: dateutil.parser._parser [assertion]
+      early skip of rewriting module: dateutil.relativedelta [assertion]
+      early skip of rewriting module: dateutil._common [assertion]
+      early skip of rewriting module: dateutil.parser.isoparser [assertion]
+      early skip of rewriting module: botocore.awsrequest [assertion]
+      early skip of rewriting module: botocore.httpsession [assertion]
+      early skip of rewriting module: urllib3.contrib [assertion]
+      early skip of rewriting module: urllib3.contrib.pyopenssl [assertion]
+      early skip of rewriting module: OpenSSL [assertion]
+      early skip of rewriting module: certifi [assertion]
+      early skip of rewriting module: certifi.core [assertion]
+      early skip of rewriting module: botocore.docs.utils [assertion]
+      early skip of rewriting module: botocore.docs.method [assertion]
+      early skip of rewriting module: botocore.docs.params [assertion]
+      early skip of rewriting module: botocore.docs.sharedexample [assertion]
+      early skip of rewriting module: botocore.docs.paginator [assertion]
+      early skip of rewriting module: botocore.docs.waiter [assertion]
+      early skip of rewriting module: botocore.docs.docstring [assertion]
+      early skip of rewriting module: botocore.args [assertion]
+      early skip of rewriting module: botocore.parsers [assertion]
+      early skip of rewriting module: botocore.eventstream [assertion]
+      early skip of rewriting module: botocore.serialize [assertion]
+      early skip of rewriting module: botocore.validate [assertion]
+      early skip of rewriting module: botocore.config [assertion]
+      early skip of rewriting module: botocore.endpoint [assertion]
+      early skip of rewriting module: botocore.history [assertion]
+      early skip of rewriting module: botocore.hooks [assertion]
+      early skip of rewriting module: botocore.httpchecksum [assertion]
+      early skip of rewriting module: botocore.response [assertion]
+      early skip of rewriting module: botocore.regions [assertion]
+      early skip of rewriting module: botocore.auth [assertion]
+      early skip of rewriting module: botocore.crt [assertion]
+      early skip of rewriting module: botocore.endpoint_provider [assertion]
+      early skip of rewriting module: botocore.signers [assertion]
+      early skip of rewriting module: botocore.useragent [assertion]
+      early skip of rewriting module: botocore.customizations [assertion]
+      early skip of rewriting module: botocore.compress [assertion]
+      early skip of rewriting module: botocore.credentials [assertion]
+      early skip of rewriting module: getpass [assertion]
+      early skip of rewriting module: termios [assertion]
+      early skip of rewriting module: botocore.configloader [assertion]
+      early skip of rewriting module: configparser [assertion]
+      early skip of rewriting module: botocore.tokens [assertion]
+      early skip of rewriting module: botocore.discovery [assertion]
+      early skip of rewriting module: botocore.model [assertion]
+      early skip of rewriting module: botocore.paginate [assertion]
+      early skip of rewriting module: botocore.retries [assertion]
+      early skip of rewriting module: botocore.retries.adaptive [assertion]
+      early skip of rewriting module: botocore.retries.bucket [assertion]
+      early skip of rewriting module: botocore.retries.standard [assertion]
+      early skip of rewriting module: botocore.retries.quota [assertion]
+      early skip of rewriting module: botocore.retries.special [assertion]
+      early skip of rewriting module: botocore.retries.base [assertion]
+      early skip of rewriting module: botocore.retries.throttling [assertion]
+      early skip of rewriting module: botocore.handlers [assertion]
+      early skip of rewriting module: botocore.retryhandler [assertion]
+      early skip of rewriting module: botocore.translate [assertion]
+      early skip of rewriting module: botocore.monitoring [assertion]
+      early skip of rewriting module: botocore.configprovider [assertion]
+      early skip of rewriting module: botocore.customizations [assertion]
+      early skip of rewriting module: botocore.errorfactory [assertion]
+      early skip of rewriting module: botocore.loaders [assertion]
+      early skip of rewriting module: boto3.utils [assertion]
+      early skip of rewriting module: boto3.resources [assertion]
+      early skip of rewriting module: boto3.resources.factory [assertion]
+      early skip of rewriting module: boto3.docs [assertion]
+      early skip of rewriting module: boto3.docs.service [assertion]
+      early skip of rewriting module: boto3.docs.client [assertion]
+      early skip of rewriting module: boto3.docs.resource [assertion]
+      early skip of rewriting module: boto3.docs.action [assertion]
+      early skip of rewriting module: boto3.docs.base [assertion]
+      early skip of rewriting module: boto3.docs.method [assertion]
+      early skip of rewriting module: boto3.docs.utils [assertion]
+      early skip of rewriting module: boto3.docs.attr [assertion]
+      early skip of rewriting module: boto3.docs.collection [assertion]
+      early skip of rewriting module: boto3.docs.subresource [assertion]
+      early skip of rewriting module: boto3.docs.waiter [assertion]
+      early skip of rewriting module: boto3.docs.docstring [assertion]
+      early skip of rewriting module: boto3.resources.action [assertion]
+      early skip of rewriting module: boto3.resources.model [assertion]
+      early skip of rewriting module: boto3.resources.params [assertion]
+      early skip of rewriting module: boto3.resources.response [assertion]
+      early skip of rewriting module: boto3.resources.base [assertion]
+      early skip of rewriting module: boto3.resources.collection [assertion]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_integration_upload_audio.py>
+            name: @py_builtins
+            obj: <module 'builtins' (built-in)>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_integration_upload_audio.py>
+            name: @pytest_ar
+            obj: <module '_pytest.assertion.rewrite' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py'>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_integration_upload_audio.py>
+            name: boto3
+            obj: <module 'boto3' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\boto3\\__init__.py'>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_integration_upload_audio.py>
+            name: base64
+            obj: <module 'base64' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\base64.py'>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_integration_upload_audio.py>
+            name: json
+            obj: <module 'json' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\json\\__init__.py'>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_integration_upload_audio.py>
+            name: test_integration_lambda_handler
+            obj: <function test_integration_lambda_handler at 0x00000167EB60E700>
+          pytest_generate_tests [hook]
+              metafunc: <_pytest.python.Metafunc object at 0x00000167EB57DB50>
+          finish pytest_generate_tests --> [] [hook]
+        finish pytest_pycollect_makeitem --> [<Function test_integration_lambda_handler>] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/integration/audio/test_integration_upload_audio.py' lenresult=1 outcome='passed'> [hook]
+    genitems <Function test_integration_lambda_handler> [collection]
+      pytest_itemcollected [hook]
+          item: <Function test_integration_lambda_handler>
+      finish pytest_itemcollected --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/integration/audio/test_integration_upload_audio.py' lenresult=1 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/integration/audio' lenresult=1 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/integration' lenresult=1 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+    genitems <Dir unit> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir unit>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir unit>
+      find_module called for: conftest [assertion]
+      rewriting conftest file: 'C:\\stuff\\projects\\demo-app\\tests\\unit\\conftest.py' [assertion]
+      found cached rewritten pyc for C:\stuff\projects\demo-app\tests\unit\conftest.py [assertion]
+      early skip of rewriting module: moto [assertion]
+      early skip of rewriting module: moto.core [assertion]
+      early skip of rewriting module: moto.core.models [assertion]
+      early skip of rewriting module: unittest.mock [assertion]
+      early skip of rewriting module: asyncio [assertion]
+      early skip of rewriting module: asyncio.base_events [assertion]
+      early skip of rewriting module: concurrent [assertion]
+      early skip of rewriting module: concurrent.futures [assertion]
+      early skip of rewriting module: concurrent.futures._base [assertion]
+      early skip of rewriting module: asyncio.constants [assertion]
+      early skip of rewriting module: asyncio.coroutines [assertion]
+      early skip of rewriting module: asyncio.events [assertion]
+      early skip of rewriting module: contextvars [assertion]
+      early skip of rewriting module: _contextvars [assertion]
+      early skip of rewriting module: asyncio.format_helpers [assertion]
+      early skip of rewriting module: _asyncio [assertion]
+      early skip of rewriting module: asyncio.base_futures [assertion]
+      early skip of rewriting module: asyncio.exceptions [assertion]
+      early skip of rewriting module: asyncio.base_tasks [assertion]
+      early skip of rewriting module: asyncio.futures [assertion]
+      early skip of rewriting module: asyncio.protocols [assertion]
+      early skip of rewriting module: asyncio.sslproto [assertion]
+      early skip of rewriting module: asyncio.transports [assertion]
+      early skip of rewriting module: asyncio.log [assertion]
+      early skip of rewriting module: asyncio.staggered [assertion]
+      early skip of rewriting module: asyncio.locks [assertion]
+      early skip of rewriting module: asyncio.mixins [assertion]
+      early skip of rewriting module: asyncio.tasks [assertion]
+      early skip of rewriting module: asyncio.timeouts [assertion]
+      early skip of rewriting module: asyncio.trsock [assertion]
+      early skip of rewriting module: asyncio.runners [assertion]
+      early skip of rewriting module: asyncio.queues [assertion]
+      early skip of rewriting module: asyncio.streams [assertion]
+      early skip of rewriting module: asyncio.subprocess [assertion]
+      early skip of rewriting module: asyncio.taskgroups [assertion]
+      early skip of rewriting module: asyncio.threads [assertion]
+      early skip of rewriting module: asyncio.windows_events [assertion]
+      early skip of rewriting module: _overlapped [assertion]
+      early skip of rewriting module: asyncio.base_subprocess [assertion]
+      early skip of rewriting module: asyncio.proactor_events [assertion]
+      early skip of rewriting module: asyncio.selector_events [assertion]
+      early skip of rewriting module: asyncio.windows_utils [assertion]
+      early skip of rewriting module: pkgutil [assertion]
+      early skip of rewriting module: responses [assertion]
+      early skip of rewriting module: yaml [assertion]
+      early skip of rewriting module: yaml.error [assertion]
+      early skip of rewriting module: yaml.tokens [assertion]
+      early skip of rewriting module: yaml.events [assertion]
+      early skip of rewriting module: yaml.nodes [assertion]
+      early skip of rewriting module: yaml.loader [assertion]
+      early skip of rewriting module: yaml.reader [assertion]
+      early skip of rewriting module: yaml.scanner [assertion]
+      early skip of rewriting module: yaml.parser [assertion]
+      early skip of rewriting module: yaml.composer [assertion]
+      early skip of rewriting module: yaml.constructor [assertion]
+      early skip of rewriting module: yaml.resolver [assertion]
+      early skip of rewriting module: yaml.dumper [assertion]
+      early skip of rewriting module: yaml.emitter [assertion]
+      early skip of rewriting module: yaml.serializer [assertion]
+      early skip of rewriting module: yaml.representer [assertion]
+      early skip of rewriting module: yaml.cyaml [assertion]
+      early skip of rewriting module: yaml._yaml [assertion]
+      early skip of rewriting module: requests [assertion]
+      early skip of rewriting module: requests.exceptions [assertion]
+      early skip of rewriting module: requests.compat [assertion]
+      early skip of rewriting module: chardet [assertion]
+      early skip of rewriting module: charset_normalizer [assertion]
+      early skip of rewriting module: charset_normalizer.api [assertion]
+      early skip of rewriting module: charset_normalizer.cd [assertion]
+      early skip of rewriting module: charset_normalizer.constant [assertion]
+      early skip of rewriting module: charset_normalizer.md [assertion]
+      early skip of rewriting module: charset_normalizer.md__mypyc [assertion]
+      early skip of rewriting module: charset_normalizer.utils [assertion]
+      early skip of rewriting module: _multibytecodec [assertion]
+      early skip of rewriting module: charset_normalizer.models [assertion]
+      early skip of rewriting module: charset_normalizer.legacy [assertion]
+      early skip of rewriting module: charset_normalizer.version [assertion]
+      early skip of rewriting module: simplejson [assertion]
+      early skip of rewriting module: http.cookiejar [assertion]
+      early skip of rewriting module: http.cookies [assertion]
+      early skip of rewriting module: chardet [assertion]
+      early skip of rewriting module: requests.packages [assertion]
+      early skip of rewriting module: idna [assertion]
+      early skip of rewriting module: idna.core [assertion]
+      early skip of rewriting module: idna.idnadata [assertion]
+      early skip of rewriting module: idna.intranges [assertion]
+      early skip of rewriting module: idna.package_data [assertion]
+      early skip of rewriting module: requests.utils [assertion]
+      early skip of rewriting module: requests.certs [assertion]
+      early skip of rewriting module: requests.__version__ [assertion]
+      early skip of rewriting module: requests._internal_utils [assertion]
+      early skip of rewriting module: requests.cookies [assertion]
+      early skip of rewriting module: requests.structures [assertion]
+      early skip of rewriting module: importlib.readers [assertion]
+      early skip of rewriting module: importlib.resources.readers [assertion]
+      early skip of rewriting module: importlib.resources._itertools [assertion]
+      early skip of rewriting module: requests.api [assertion]
+      early skip of rewriting module: requests.sessions [assertion]
+      early skip of rewriting module: requests.adapters [assertion]
+      early skip of rewriting module: requests.auth [assertion]
+      early skip of rewriting module: requests.models [assertion]
+      early skip of rewriting module: encodings.idna [assertion]
+      early skip of rewriting module: stringprep [assertion]
+      early skip of rewriting module: requests.hooks [assertion]
+      early skip of rewriting module: requests.status_codes [assertion]
+      early skip of rewriting module: urllib3.contrib.socks [assertion]
+      early skip of rewriting module: socks [assertion]
+      early skip of rewriting module: responses.matchers [assertion]
+      early skip of rewriting module: responses.registries [assertion]
+      early skip of rewriting module: typing_extensions [assertion]
+      early skip of rewriting module: moto.backend_index [assertion]
+      early skip of rewriting module: moto.settings [assertion]
+      early skip of rewriting module: moto.core.config [assertion]
+      early skip of rewriting module: moto.core.base_backend [assertion]
+      early skip of rewriting module: moto.utilities [assertion]
+      early skip of rewriting module: moto.utilities.utils [assertion]
+      early skip of rewriting module: moto.core.model_instances [assertion]
+      early skip of rewriting module: moto.core.responses [assertion]
+      early skip of rewriting module: xml.dom [assertion]
+      early skip of rewriting module: xml.dom.domreg [assertion]
+      early skip of rewriting module: xml.dom.minidom [assertion]
+      early skip of rewriting module: xml.dom.minicompat [assertion]
+      early skip of rewriting module: xml.dom.xmlbuilder [assertion]
+      early skip of rewriting module: xml.dom.NodeFilter [assertion]
+      early skip of rewriting module: xmltodict [assertion]
+      early skip of rewriting module: xml.parsers [assertion]
+      early skip of rewriting module: xml.parsers.expat [assertion]
+      early skip of rewriting module: xml.sax [assertion]
+      early skip of rewriting module: xml.sax.xmlreader [assertion]
+      early skip of rewriting module: xml.sax.handler [assertion]
+      early skip of rewriting module: xml.sax._exceptions [assertion]
+      early skip of rewriting module: xml.sax.saxutils [assertion]
+      early skip of rewriting module: jinja2 [assertion]
+      early skip of rewriting module: jinja2.bccache [assertion]
+      early skip of rewriting module: pickle [assertion]
+      early skip of rewriting module: _compat_pickle [assertion]
+      early skip of rewriting module: _pickle [assertion]
+      early skip of rewriting module: jinja2.environment [assertion]
+      early skip of rewriting module: markupsafe [assertion]
+      early skip of rewriting module: markupsafe._speedups [assertion]
+      early skip of rewriting module: jinja2.nodes [assertion]
+      early skip of rewriting module: jinja2.utils [assertion]
+      early skip of rewriting module: jinja2.compiler [assertion]
+      early skip of rewriting module: jinja2.exceptions [assertion]
+      early skip of rewriting module: jinja2.idtracking [assertion]
+      early skip of rewriting module: jinja2.visitor [assertion]
+      early skip of rewriting module: jinja2.optimizer [assertion]
+      early skip of rewriting module: jinja2.defaults [assertion]
+      early skip of rewriting module: jinja2.filters [assertion]
+      early skip of rewriting module: jinja2.async_utils [assertion]
+      early skip of rewriting module: jinja2.runtime [assertion]
+      early skip of rewriting module: jinja2.tests [assertion]
+      early skip of rewriting module: jinja2.lexer [assertion]
+      early skip of rewriting module: jinja2._identifier [assertion]
+      early skip of rewriting module: jinja2.parser [assertion]
+      early skip of rewriting module: jinja2.loaders [assertion]
+      early skip of rewriting module: werkzeug [assertion]
+      early skip of rewriting module: werkzeug.serving [assertion]
+      early skip of rewriting module: socketserver [assertion]
+      early skip of rewriting module: http.server [assertion]
+      early skip of rewriting module: werkzeug._internal [assertion]
+      early skip of rewriting module: werkzeug.exceptions [assertion]
+      early skip of rewriting module: werkzeug.urls [assertion]
+      early skip of rewriting module: werkzeug.datastructures [assertion]
+      early skip of rewriting module: werkzeug.datastructures.accept [assertion]
+      early skip of rewriting module: werkzeug.datastructures.structures [assertion]
+      early skip of rewriting module: werkzeug.datastructures.mixins [assertion]
+      early skip of rewriting module: werkzeug.http [assertion]
+      early skip of rewriting module: werkzeug.sansio [assertion]
+      early skip of rewriting module: werkzeug.sansio.http [assertion]
+      early skip of rewriting module: werkzeug.datastructures.auth [assertion]
+      early skip of rewriting module: werkzeug.datastructures.cache_control [assertion]
+      early skip of rewriting module: werkzeug.datastructures.csp [assertion]
+      early skip of rewriting module: werkzeug.datastructures.etag [assertion]
+      early skip of rewriting module: werkzeug.datastructures.file_storage [assertion]
+      early skip of rewriting module: werkzeug.datastructures.headers [assertion]
+      early skip of rewriting module: werkzeug.datastructures.range [assertion]
+      early skip of rewriting module: werkzeug.test [assertion]
+      early skip of rewriting module: werkzeug.sansio.multipart [assertion]
+      early skip of rewriting module: werkzeug.utils [assertion]
+      early skip of rewriting module: werkzeug.security [assertion]
+      early skip of rewriting module: secrets [assertion]
+      early skip of rewriting module: werkzeug.wsgi [assertion]
+      early skip of rewriting module: werkzeug.sansio.utils [assertion]
+      early skip of rewriting module: werkzeug.wrappers [assertion]
+      early skip of rewriting module: werkzeug.wrappers.request [assertion]
+      early skip of rewriting module: werkzeug.formparser [assertion]
+      early skip of rewriting module: werkzeug.sansio.request [assertion]
+      early skip of rewriting module: werkzeug.user_agent [assertion]
+      early skip of rewriting module: werkzeug.wrappers.response [assertion]
+      early skip of rewriting module: werkzeug.sansio.response [assertion]
+      early skip of rewriting module: moto.core.common_types [assertion]
+      early skip of rewriting module: moto.core.exceptions [assertion]
+      early skip of rewriting module: moto.core.utils [assertion]
+      early skip of rewriting module: moto.core.versions [assertion]
+      early skip of rewriting module: moto.utilities.distutils_version [assertion]
+      early skip of rewriting module: moto.utilities.aws_headers [assertion]
+      early skip of rewriting module: moto.core.botocore_stubber [assertion]
+      early skip of rewriting module: moto.core.custom_responses_mock [assertion]
+      early skip of rewriting module: moto.backends [assertion]
+      early skip of rewriting module: moto.core.responses_custom_registry [assertion]
+      early skip of rewriting module: moto.core.decorator [assertion]
+      loading conftestmodule <module 'conftest' from 'C:\\stuff\\projects\\demo-app\\tests\\unit\\conftest.py'> [pluginmanage]
+        pytest_plugin_registered [hook]
+            plugin: <module 'conftest' from 'C:\\stuff\\projects\\demo-app\\tests\\unit\\conftest.py'>
+            plugin_name: C:\stuff\projects\demo-app\tests\unit\conftest.py
+            manager: <_pytest.config.PytestPluginManager object at 0x00000167E8B6ABA0>
+        finish pytest_plugin_registered --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\__pycache__
+            path: C:\stuff\projects\demo-app\tests\unit\__pycache__
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\audio
+            path: C:\stuff\projects\demo-app\tests\unit\audio
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tests\unit\audio
+            parent: <Dir unit>
+        finish pytest_collect_directory --> <Dir audio> [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\conftest.py
+            path: C:\stuff\projects\demo-app\tests\unit\conftest.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Dir unit>
+            file_path: C:\stuff\projects\demo-app\tests\unit\conftest.py
+            path: C:\stuff\projects\demo-app\tests\unit\conftest.py
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\dynamodb
+            path: C:\stuff\projects\demo-app\tests\unit\dynamodb
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tests\unit\dynamodb
+            parent: <Dir unit>
+        finish pytest_collect_directory --> <Dir dynamodb> [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\tracks
+            path: C:\stuff\projects\demo-app\tests\unit\tracks
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_directory [hook]
+            path: C:\stuff\projects\demo-app\tests\unit\tracks
+            parent: <Dir unit>
+        finish pytest_collect_directory --> <Dir tracks> [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/unit' lenresult=3 outcome='passed'> [hook]
+    genitems <Dir audio> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir audio>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir audio>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\audio\.pytest_cache
+            path: C:\stuff\projects\demo-app\tests\unit\audio\.pytest_cache
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\audio\__pycache__
+            path: C:\stuff\projects\demo-app\tests\unit\audio\__pycache__
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\audio\upload_audio.py
+            path: C:\stuff\projects\demo-app\tests\unit\audio\upload_audio.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Dir audio>
+            file_path: C:\stuff\projects\demo-app\tests\unit\audio\upload_audio.py
+            path: C:\stuff\projects\demo-app\tests\unit\audio\upload_audio.py
+        finish pytest_collect_file --> [] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/unit/audio' lenresult=0 outcome='passed'> [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/unit/audio' lenresult=0 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+    genitems <Dir dynamodb> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir dynamodb>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir dynamodb>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\dynamodb\.pytest_cache
+            path: C:\stuff\projects\demo-app\tests\unit\dynamodb\.pytest_cache
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\dynamodb\__pycache__
+            path: C:\stuff\projects\demo-app\tests\unit\dynamodb\__pycache__
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\dynamodb\test_dynamodb.py
+            path: C:\stuff\projects\demo-app\tests\unit\dynamodb\test_dynamodb.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Dir dynamodb>
+            file_path: C:\stuff\projects\demo-app\tests\unit\dynamodb\test_dynamodb.py
+            path: C:\stuff\projects\demo-app\tests\unit\dynamodb\test_dynamodb.py
+          pytest_pycollect_makemodule [hook]
+              parent: <Dir dynamodb>
+              module_path: C:\stuff\projects\demo-app\tests\unit\dynamodb\test_dynamodb.py
+              path: C:\stuff\projects\demo-app\tests\unit\dynamodb\test_dynamodb.py
+          finish pytest_pycollect_makemodule --> <Module test_dynamodb.py> [hook]
+        finish pytest_collect_file --> [<Module test_dynamodb.py>] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/unit/dynamodb' lenresult=1 outcome='passed'> [hook]
+    genitems <Module test_dynamodb.py> [collection]
+      pytest_collectstart [hook]
+          collector: <Module test_dynamodb.py>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Module test_dynamodb.py>
+      find_module called for: test_dynamodb [assertion]
+      matched test file 'C:\\stuff\\projects\\demo-app\\tests\\unit\\dynamodb\\test_dynamodb.py' [assertion]
+      found cached rewritten pyc for C:\stuff\projects\demo-app\tests\unit\dynamodb\test_dynamodb.py [assertion]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: @py_builtins
+            obj: <module 'builtins' (built-in)>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: @pytest_ar
+            obj: <module '_pytest.assertion.rewrite' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\_pytest\\assertion\\rewrite.py'>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: boto3
+            obj: <module 'boto3' from 'C:\\Users\\bcramba\\AppData\\Local\\Programs\\Python\\Python312\\Lib\\site-packages\\boto3\\__init__.py'>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: mock_aws
+            obj: <function mock_aws at 0x00000167ECBB6840>
+        finish pytest_pycollect_makeitem --> None [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: test_create_table
+            obj: <function test_create_table at 0x00000167ECBB7060>
+          pytest_generate_tests [hook]
+              metafunc: <_pytest.python.Metafunc object at 0x00000167EC216A80>
+          finish pytest_generate_tests --> [] [hook]
+        finish pytest_pycollect_makeitem --> [<Function test_create_table>] [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: test_put_and_get_item
+            obj: <function test_put_and_get_item at 0x00000167ECBB71A0>
+          pytest_generate_tests [hook]
+              metafunc: <_pytest.python.Metafunc object at 0x00000167ECA3E4B0>
+          finish pytest_generate_tests --> [] [hook]
+        finish pytest_pycollect_makeitem --> [<Function test_put_and_get_item>] [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: test_update_item
+            obj: <function test_update_item at 0x00000167ECBB72E0>
+          pytest_generate_tests [hook]
+              metafunc: <_pytest.python.Metafunc object at 0x00000167EC216A80>
+          finish pytest_generate_tests --> [] [hook]
+        finish pytest_pycollect_makeitem --> [<Function test_update_item>] [hook]
+        pytest_pycollect_makeitem [hook]
+            collector: <Module test_dynamodb.py>
+            name: test_delete_item
+            obj: <function test_delete_item at 0x00000167ECBB7420>
+          pytest_generate_tests [hook]
+              metafunc: <_pytest.python.Metafunc object at 0x00000167EC5F6300>
+          finish pytest_generate_tests --> [] [hook]
+        finish pytest_pycollect_makeitem --> [<Function test_delete_item>] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/unit/dynamodb/test_dynamodb.py' lenresult=4 outcome='passed'> [hook]
+    genitems <Function test_create_table> [collection]
+      pytest_itemcollected [hook]
+          item: <Function test_create_table>
+      finish pytest_itemcollected --> [] [hook]
+    genitems <Function test_put_and_get_item> [collection]
+      pytest_itemcollected [hook]
+          item: <Function test_put_and_get_item>
+      finish pytest_itemcollected --> [] [hook]
+    genitems <Function test_update_item> [collection]
+      pytest_itemcollected [hook]
+          item: <Function test_update_item>
+      finish pytest_itemcollected --> [] [hook]
+    genitems <Function test_delete_item> [collection]
+      pytest_itemcollected [hook]
+          item: <Function test_delete_item>
+      finish pytest_itemcollected --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/unit/dynamodb/test_dynamodb.py' lenresult=4 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/unit/dynamodb' lenresult=1 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+    genitems <Dir tracks> [collection]
+      pytest_collectstart [hook]
+          collector: <Dir tracks>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Dir tracks>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\tracks\.pytest_cache
+            path: C:\stuff\projects\demo-app\tests\unit\tracks\.pytest_cache
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\tracks\__pycache__
+            path: C:\stuff\projects\demo-app\tests\unit\tracks\__pycache__
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\tracks\test_create_track.py
+            path: C:\stuff\projects\demo-app\tests\unit\tracks\test_create_track.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Dir tracks>
+            file_path: C:\stuff\projects\demo-app\tests\unit\tracks\test_create_track.py
+            path: C:\stuff\projects\demo-app\tests\unit\tracks\test_create_track.py
+          pytest_pycollect_makemodule [hook]
+              parent: <Dir tracks>
+              module_path: C:\stuff\projects\demo-app\tests\unit\tracks\test_create_track.py
+              path: C:\stuff\projects\demo-app\tests\unit\tracks\test_create_track.py
+          finish pytest_pycollect_makemodule --> <Module test_create_track.py> [hook]
+        finish pytest_collect_file --> [<Module test_create_track.py>] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tests\unit\tracks\test_delete_track.py
+            path: C:\stuff\projects\demo-app\tests\unit\tracks\test_delete_track.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Dir tracks>
+            file_path: C:\stuff\projects\demo-app\tests\unit\tracks\test_delete_track.py
+            path: C:\stuff\projects\demo-app\tests\unit\tracks\test_delete_track.py
+          pytest_pycollect_makemodule [hook]
+              parent: <Dir tracks>
+              module_path: C:\stuff\projects\demo-app\tests\unit\tracks\test_delete_track.py
+              path: C:\stuff\projects\demo-app\tests\unit\tracks\test_delete_track.py
+          finish pytest_pycollect_makemodule --> <Module test_delete_track.py> [hook]
+        finish pytest_collect_file --> [<Module test_delete_track.py>] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tests/unit/tracks' lenresult=2 outcome='passed'> [hook]
+    genitems <Module test_create_track.py> [collection]
+      pytest_collectstart [hook]
+          collector: <Module test_create_track.py>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Module test_create_track.py>
+      find_module called for: test_create_track [assertion]
+      matched test file 'C:\\stuff\\projects\\demo-app\\tests\\unit\\tracks\\test_create_track.py' [assertion]
+      found cached rewritten pyc for C:\stuff\projects\demo-app\tests\unit\tracks\test_create_track.py [assertion]
+      early skip of rewriting module: tracks [assertion]
+      early skip of rewriting module: tracks.create_track [assertion]
+      finish pytest_make_collect_report --> <CollectReport 'tests/unit/tracks/test_create_track.py' lenresult=0 outcome='failed'> [hook]
+      pytest_exception_interact [hook]
+          node: <Module test_create_track.py>
+          call: <CallInfo when='collect' excinfo=<ExceptionInfo CollectError("ImportError while importing test module 'C:\\stuff\\projects\\demo-app\\tests\\unit\\tracks\\test_create...>\n    from tracks.create_track import lambda_handler\nE   ModuleNotFoundError: No module named 'tracks.create_track'") tblen=7>>
+          report: <CollectReport 'tests/unit/tracks/test_create_track.py' lenresult=0 outcome='failed'>
+      finish pytest_exception_interact --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/unit/tracks/test_create_track.py' lenresult=0 outcome='failed'>
+      finish pytest_collectreport --> [] [hook]
+    genitems <Module test_delete_track.py> [collection]
+      pytest_collectstart [hook]
+          collector: <Module test_delete_track.py>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Module test_delete_track.py>
+      find_module called for: test_delete_track [assertion]
+      matched test file 'C:\\stuff\\projects\\demo-app\\tests\\unit\\tracks\\test_delete_track.py' [assertion]
+      found cached rewritten pyc for C:\stuff\projects\demo-app\tests\unit\tracks\test_delete_track.py [assertion]
+      early skip of rewriting module: tracks.create_track [assertion]
+      finish pytest_make_collect_report --> <CollectReport 'tests/unit/tracks/test_delete_track.py' lenresult=0 outcome='failed'> [hook]
+      pytest_exception_interact [hook]
+          node: <Module test_delete_track.py>
+          call: <CallInfo when='collect' excinfo=<ExceptionInfo CollectError("ImportError while importing test module 'C:\\stuff\\projects\\demo-app\\tests\\unit\\tracks\\test_delete...>\n    from tracks.create_track import lambda_handler\nE   ModuleNotFoundError: No module named 'tracks.create_track'") tblen=7>>
+          report: <CollectReport 'tests/unit/tracks/test_delete_track.py' lenresult=0 outcome='failed'>
+      finish pytest_exception_interact --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/unit/tracks/test_delete_track.py' lenresult=0 outcome='failed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/unit/tracks' lenresult=2 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests/unit' lenresult=3 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tests' lenresult=2 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+    genitems <Package tracks> [collection]
+      pytest_collectstart [hook]
+          collector: <Package tracks>
+      finish pytest_collectstart --> [] [hook]
+      pytest_make_collect_report [hook]
+          collector: <Package tracks>
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tracks\__init__.py
+            path: C:\stuff\projects\demo-app\tracks\__init__.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package tracks>
+            file_path: C:\stuff\projects\demo-app\tracks\__init__.py
+            path: C:\stuff\projects\demo-app\tracks\__init__.py
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tracks\__pycache__
+            path: C:\stuff\projects\demo-app\tracks\__pycache__
+        finish pytest_ignore_collect --> True [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tracks\create_track.py
+            path: C:\stuff\projects\demo-app\tracks\create_track.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package tracks>
+            file_path: C:\stuff\projects\demo-app\tracks\create_track.py
+            path: C:\stuff\projects\demo-app\tracks\create_track.py
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tracks\delete_track.py
+            path: C:\stuff\projects\demo-app\tracks\delete_track.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package tracks>
+            file_path: C:\stuff\projects\demo-app\tracks\delete_track.py
+            path: C:\stuff\projects\demo-app\tracks\delete_track.py
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tracks\list_tracks.py
+            path: C:\stuff\projects\demo-app\tracks\list_tracks.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package tracks>
+            file_path: C:\stuff\projects\demo-app\tracks\list_tracks.py
+            path: C:\stuff\projects\demo-app\tracks\list_tracks.py
+        finish pytest_collect_file --> [] [hook]
+        pytest_ignore_collect [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            collection_path: C:\stuff\projects\demo-app\tracks\update_track.py
+            path: C:\stuff\projects\demo-app\tracks\update_track.py
+        finish pytest_ignore_collect --> None [hook]
+        pytest_collect_file [hook]
+            parent: <Package tracks>
+            file_path: C:\stuff\projects\demo-app\tracks\update_track.py
+            path: C:\stuff\projects\demo-app\tracks\update_track.py
+        finish pytest_collect_file --> [] [hook]
+      finish pytest_make_collect_report --> <CollectReport 'tracks' lenresult=0 outcome='passed'> [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport 'tracks' lenresult=0 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collectreport [hook]
+          report: <CollectReport '.' lenresult=4 outcome='passed'>
+      finish pytest_collectreport --> [] [hook]
+      pytest_collection_modifyitems [hook]
+          session: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=2 testscollected=0>
+          config: <_pytest.config.Config object at 0x00000167E8F423F0>
+          items: [<Function test_integration_lambda_handler>, <Function test_create_table>, <Function test_put_and_get_item>, <Function test_update_item>, <Function test_delete_item>]
+      finish pytest_collection_modifyitems --> [] [hook]
+      pytest_collection_finish [hook]
+          session: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=2 testscollected=0>
+        pytest_report_collectionfinish [hook]
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+            items: [<Function test_integration_lambda_handler>, <Function test_create_table>, <Function test_put_and_get_item>, <Function test_update_item>, <Function test_delete_item>]
+            start_path: C:\stuff\projects\demo-app
+            startdir: C:\stuff\projects\demo-app
+        finish pytest_report_collectionfinish --> [] [hook]
+      finish pytest_collection_finish --> [] [hook]
+    finish pytest_collection --> None [hook]
+    pytest_runtestloop [hook]
+        session: <Session  exitstatus=<ExitCode.OK: 0> testsfailed=2 testscollected=5>
+    pytest_keyboard_interrupt [hook]
+        excinfo: <ExceptionInfo Interrupted('2 errors during collection') tblen=15>
+    finish pytest_keyboard_interrupt --> [] [hook]
+    pytest_sessionfinish [hook]
+        session: <Session  exitstatus=<ExitCode.INTERRUPTED: 2> testsfailed=2 testscollected=5>
+        exitstatus: 2
+      pytest_terminal_summary [hook]
+          terminalreporter: <_pytest.terminal.TerminalReporter object at 0x00000167EB59F7D0>
+          exitstatus: 2
+          config: <_pytest.config.Config object at 0x00000167E8F423F0>
+        pytest_report_teststatus [hook]
+            report: <CollectReport 'tests/unit/tracks/test_create_track.py' lenresult=0 outcome='failed'>
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+        finish pytest_report_teststatus --> ('error', 'E', 'ERROR') [hook]
+        pytest_report_teststatus [hook]
+            report: <CollectReport 'tests/unit/tracks/test_delete_track.py' lenresult=0 outcome='failed'>
+            config: <_pytest.config.Config object at 0x00000167E8F423F0>
+        finish pytest_report_teststatus --> ('error', 'E', 'ERROR') [hook]
+      finish pytest_terminal_summary --> [] [hook]
+    finish pytest_sessionfinish --> [] [hook]
+    pytest_unconfigure [hook]
+        config: <_pytest.config.Config object at 0x00000167E8F423F0>
+    finish pytest_unconfigure --> [] [hook]

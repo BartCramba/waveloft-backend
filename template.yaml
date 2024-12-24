@@ -1,0 +1,478 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+
+Resources:
+
+  # API Gateway
+  WaveLoftApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      Name: WaveLoftApi
+      StageName: Prod
+      Cors:
+        AllowOrigin: "'*'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
+
+  # DynamoDB Table
+  TracksTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: Tracks
+      AttributeDefinitions:
+        - AttributeName: id
+          AttributeType: S
+      KeySchema:
+        - AttributeName: id
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST
+
+  # S3 Bucket
+  AudioBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: wave-loft-audio-bucket
+      CorsConfiguration:
+        CorsRules:
+          - AllowedOrigins:
+              - "*"
+            AllowedMethods:
+              - GET
+              - PUT
+              - POST
+            AllowedHeaders:
+              - "*"
+            ExposedHeaders:
+              - ETag
+            MaxAge: 3000
+
+  # Lambda Layers
+  UtilsLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      Content:
+        S3Bucket: utilitary-bucket
+        S3Key: utils/cors_utils.zip
+      CompatibleRuntimes:
+        - python3.12
+      Description: "Layer for CORS utilities"
+
+  # Create Track Lambda Function
+  CreateTrackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: create_track.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks
+      MemorySize: 128
+      Timeout: 10
+      Role: !GetAtt CreateTrackFunctionRole.Arn
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Tracks
+      Events:
+        CreateTrackApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /tracks
+            Method: POST
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks
+          S3_BUCKET: wave-loft-audio-bucket
+      Tracing: PassThrough
+      Layers:
+        - !Ref UtilsLayer
+
+  CreateTrackFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: CreateTrackPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # Permissions for CloudWatch Logs
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+
+              # Permissions for DynamoDB (Tracks table)
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:UpdateItem
+                Resource: !GetAtt TracksTable.Arn
+
+              # Permissions for S3 (wave-loft-audio-bucket)
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:HeadObject
+                Resource: !Sub "${AudioBucket.Arn}/*"
+
+  CreateTrackApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref CreateTrackFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/POST/tracks
+
+  # Update Track Lambda Function
+  UpdateTrackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: update_track.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt UpdateTrackFunctionRole.Arn
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Tracks
+      Events:
+        UpdateTrackApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /tracks/{id}
+            Method: PUT
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks
+          S3_BUCKET: wave-loft-audio-bucket
+      Tracing: PassThrough
+
+  UpdateTrackFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: UpdateTrackPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - dynamodb:UpdateItem
+                Resource: !GetAtt TracksTable.Arn
+
+  UpdateTrackApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref UpdateTrackFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/PUT/tracks/{id}
+
+  # List Tracks Lambda Function
+  ListTracksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: list_tracks.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt ListTracksFunctionRole.Arn
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Tracks
+      Events:
+        ListTracksApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /tracks
+            Method: GET
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks
+          BUCKET_NAME: wave-loft-audio-bucket
+      Layers:
+        - !Ref UtilsLayer
+      Tracing: PassThrough
+
+  ListTracksFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: ListTracksPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - dynamodb:Scan  # Add Scan permission
+                  - dynamodb:GetItem  # Optional: if your function reads specific items
+                  - dynamodb:Query
+                Resource: !GetAtt TracksTable.Arn
+
+  ListTracksApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref ListTracksFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/GET/tracks
+
+  # Delete Track Lambda Function
+  DeleteTrackFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: delete_track.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt DeleteTrackFunctionRole.Arn
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Tracks
+      Events:
+        DeleteTrackApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /tracks/{id}
+            Method: DELETE
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks
+          S3_BUCKET: wave-loft-audio-bucket
+      Tracing: PassThrough
+
+  DeleteTrackFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: DeleteTrackPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              - Effect: Allow
+                Action:
+                  - dynamodb:DeleteItem
+                Resource: !GetAtt TracksTable.Arn
+
+  DeleteTrackApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref DeleteTrackFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/DELETE/tracks/{id}
+
+    # Upload Audio Function
+  UploadAudioFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: upload_audio.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./audio
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt UploadFunctionRole.Arn
+      Environment:
+        Variables:
+          BUCKET_NAME: wave-loft-audio-bucket
+      Policies:
+        - S3WritePolicy:
+            BucketName: wave-loft-audio-bucket
+      Events:
+        UploadAudioApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /upload
+            Method: POST
+
+  UploadFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: S3WriteAccess
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                Resource: !Sub "${AudioBucket.Arn}/*"
+
+  # Generate Presigned URL for Upload
+  GeneratePresignedUrlUploadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: generate_presigned_url_upload.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./audio
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt GeneratePresignedUrlUploadFunctionRole.Arn
+      Environment:
+        Variables:
+          BUCKET_NAME: wave-loft-audio-bucket
+      Policies:
+        - S3WritePolicy:
+            BucketName: wave-loft-audio-bucket
+      Layers:
+        - !Ref UtilsLayer
+      Events:
+        GeneratePresignedUrlUploadApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /upload/presigned
+            Method: POST
+
+  GeneratePresignedUrlUploadFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: GeneratePresignedUrlUploadPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:GetObject
+                Resource: !Sub "${AudioBucket.Arn}/*"
+
+
+  # Generate Presigned URL for Download
+  GeneratePresignedUrlDownloadFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: generate_presigned_url_download.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./audio
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt GeneratePresignedUrlDownloadFunctionRole.Arn
+      Environment:
+        Variables:
+          BUCKET_NAME: wave-loft-audio-bucket
+          DYNAMODB_TABLE: Tracks
+      Policies:
+        - S3ReadPolicy:
+            BucketName: wave-loft-audio-bucket
+        - DynamoDBReadPolicy:
+            TableName: Tracks
+      Layers:
+        - !Ref UtilsLayer
+      Events:
+        GeneratePresignedUrlDownloadApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /download/presigned
+            Method: GET
+
+  GeneratePresignedUrlDownloadFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: GeneratePresignedUrlDownloadPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: arn:aws:logs:*:*:*
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:ListBucket  # Add ListBucket action
+                Resource:
+                  - !Sub "${AudioBucket.Arn}"       # Bucket-level action
+                  - !Sub "${AudioBucket.Arn}/*"    # Object-level action
+              - Effect: Allow
+                Action:
+                  - dynamodb:Scan  # Add Scan permission
+                  - dynamodb:GetItem
+                  - dynamodb:Query
+                Resource: !GetAtt TracksTable.Arn
