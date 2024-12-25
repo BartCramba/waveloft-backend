@@ -64,8 +64,8 @@ Resources:
       Handler: create_track.lambda_handler
       Runtime: python3.12
       CodeUri: ./tracks
-      MemorySize: 128
-      Timeout: 10
+      MemorySize: 256
+      Timeout: 30
       Role: !GetAtt CreateTrackFunctionRole.Arn
       Policies:
         - DynamoDBCrudPolicy:
@@ -113,6 +113,7 @@ Resources:
                 Action:
                   - dynamodb:PutItem
                   - dynamodb:UpdateItem
+                  - dynamodb:BatchWriteItem
                 Resource: !GetAtt TracksTable.Arn
 
               # Permissions for S3 (wave-loft-audio-bucket)

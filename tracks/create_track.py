@@ -2,221 +2,185 @@ import boto3
 import os
 import json
 import uuid
-import tempfile
 from mutagen import File
 from mutagen.flac import FLAC
-from datetime import datetime, UTC
 from mutagen.id3 import ID3, APIC
 from mutagen.mp3 import MP3
+from datetime import datetime, timezone
 from utils.cors_utils import build_response
 
-# Initialize AWS resources
+# AWS Resources
 dynamodb = boto3.resource('dynamodb')
 s3 = boto3.client('s3')
 
-# Environment variables
+# Environment Variables
 DYNAMODB_TABLE = os.environ['DYNAMODB_TABLE']
 AUDIO_BUCKET = os.environ['S3_BUCKET']
-DEFAULT_ALBUM_ART_S3_KEY = "album_art/default_album_art.png"  # S3 key for default album art
+DEFAULT_ALBUM_ART_S3_KEY = "album_art/default_album_art.png"
 
 def lambda_handler(event, context):
     try:
         print("Lambda function started")
-
-        # Parse the incoming request
-        print(f"Received event: {json.dumps(event)}")
         body = json.loads(event['body'])
-        file_name = body['fileName']
-        audio_s3_key = body['s3Key']
-        print(f"Processing file: {file_name}, S3 Key: {audio_s3_key}")
+        files = body['files']
+        print(f"Processing {len(files)} files")
 
-        # Process the audio file
-        metadata = process_audio_file(file_name, audio_s3_key)
-        print(f"Metadata extracted: {json.dumps(metadata)}")
+        responses = []
+        for file_data in files:
+            file_name = file_data['fileName']
+            audio_s3_key = file_data['s3Key']
+            print(f"Processing file: {file_name}, S3 Key: {audio_s3_key}")
 
-        # Save metadata to DynamoDB
-        save_metadata_to_dynamodb(metadata)
-        print("Metadata successfully saved to DynamoDB.")
+            metadata = process_audio_file(file_name, audio_s3_key)
+            responses.append(metadata)
 
-        # Respond with success
-        return build_response(200, json.dumps({"message": "Track created successfully", "metadata": metadata}))
+        save_metadata_to_dynamodb_batch(responses)
+        print("All files processed successfully.")
+        return build_response(200, json.dumps({"message": "Tracks created successfully", "tracks": responses}))
     except Exception as e:
         print(f"Error in lambda_handler: {str(e)}")
         return build_response(500, json.dumps({"error": str(e)}))
 
+
 def process_audio_file(file_name, audio_s3_key):
     """
-    Process the audio file: download, extract metadata, and upload album art.
+    Process an individual audio file: download, extract metadata, and upload album art.
     """
-    # Download audio file from S3
-    local_audio_path = download_file_from_s3(audio_s3_key)
+    try:
+        # Download the audio file
+        print(f"Downloading file from S3: Bucket={AUDIO_BUCKET}, Key={audio_s3_key}")
+        local_audio_path = download_file_from_s3(audio_s3_key)
+        print(f"File downloaded to: {local_audio_path}")
 
-    # Detect file type explicitly and extract metadata
-    print(f"Detecting file type for: {file_name}")
-    if file_name.lower().endswith('.mp3'):
-        file_type = 'mp3'
-        audio = MP3(local_audio_path, ID3=ID3)
-        print("MP3 file detected.")
-    elif file_name.lower().endswith('.flac'):
-        file_type = 'flac'
-        audio = FLAC(local_audio_path)
-        print("FLAC file detected.")
-    else:
-        file_type = 'unknown'
-        audio = File(local_audio_path, easy=True)
-        print("Unknown or generic audio file detected.")
+        # Extract metadata
+        print(f"Extracting metadata for file: {local_audio_path}")
+        metadata = extract_audio_metadata(local_audio_path, file_name)
+        print(f"Extracted metadata: {metadata}")
 
-    if not audio:
-        raise ValueError(f"Unsupported or invalid audio file: {file_name}")
+        # Upload album art
+        print(f"Analyzing file for album art: {local_audio_path}")
+        album_art_s3_key = upload_album_art(local_audio_path, file_name)
 
-    print(f"Extracting metadata for: {file_name}")
-    metadata = extract_audio_metadata(audio, file_name)
-    print(f"Extracted metadata: {json.dumps(metadata)}")
+        # Add metadata fields
+        metadata.update({
+            "id": str(uuid.uuid4()),
+            "fileName": file_name,
+            "audioS3Key": audio_s3_key,
+            "albumArtS3Key": album_art_s3_key,
+            "uploadedAt": datetime.now(timezone.utc).isoformat(),
+        })
+        return metadata
 
-    # Upload album art, passing the determined file type
-    print("Checking for album art...")
-    album_art_s3_key = upload_album_art(local_audio_path, AUDIO_BUCKET, "album_art", file_type)
-    if album_art_s3_key:
-        print(f"Album art uploaded: {album_art_s3_key}")
-        metadata['albumArtUrl'] = generate_presigned_url(album_art_s3_key)
-
-    # Add additional metadata
-    metadata.update({
-        "id": str(uuid.uuid4()),
-        "fileName": file_name,
-        "audioS3Key": audio_s3_key,
-        "albumArtS3Key": album_art_s3_key,  # Optional field for album art
-        "uploadedAt": datetime.now(UTC).isoformat()
-    })
-
-    print(f"Final metadata: {json.dumps(metadata)}")
-    return metadata
+    except Exception as e:
+        print(f"Error processing file {file_name}: {e}")
+        raise
 
 
-def extract_audio_metadata(audio, file_name):
-    """
-    Extract audio metadata using Mutagen.
-    """
-    title = audio.get("title", [file_name])[0]
-    title = title.replace(".mp3", "").strip()  # Remove file extension
-    artist = audio.get("artist", ["Unknown Artist"])[0]
 
-    # Infer artist from title if missing
-    if artist == "Unknown Artist" and "-" in title:
-        artist, title = map(str.strip, title.split("-", 1))
+def extract_audio_metadata(file_path, file_name):
+    try:
+        print(f"Extracting metadata for file: {file_path}")
+        audio = File(file_path, easy=True)
+        metadata = {
+            "title": audio.get("title", [file_name])[0],
+            "artist": audio.get("artist", ["Unknown Artist"])[0],
+            "album": audio.get("album", ["Unknown Album"])[0],
+        }
+        print(f"Extracted metadata: {metadata}")
+        return metadata
+    except Exception as e:
+        print(f"Error extracting metadata: {e}")
+        return {
+            "title": file_name,
+            "artist": "Unknown Artist",
+            "album": "Unknown Album"
+        }
 
-    return {
-        "title": title,
-        "artist": artist,
-        "album": audio.get("album", ["Unknown Album"])[0],
-        "duration": int(audio.info.length) if hasattr(audio, 'info') else 0,
-        "bitrate": getattr(audio.info, 'bitrate', None) // 1000 if hasattr(audio, 'info') else None
-    }
 
 def download_file_from_s3(s3_key):
     local_path = f"/tmp/{uuid.uuid4()}"
-    print(f"Downloading file from S3. Bucket: {AUDIO_BUCKET}, Key: {s3_key}")
-    s3.download_file(AUDIO_BUCKET, s3_key, local_path)
-    print(f"File downloaded to: {local_path}")
-    return local_path
-
-def upload_album_art(file_path, s3_bucket, s3_key_prefix, file_type):
-    """
-    Extract and upload album art from audio files (MP3/FLAC) with the file type passed in.
-    """
-    album_art_path = None
-
     try:
-        print(f"File path: {file_path}")
-        print(f"Received file type: {file_type}")
+        print(f"Downloading file from S3: Bucket={AUDIO_BUCKET}, Key={s3_key}")
+        s3.download_file(AUDIO_BUCKET, s3_key, local_path)
+        print(f"File downloaded to: {local_path}")
+        return local_path
+    except Exception as e:
+        print(f"Error downloading file from S3: {e}")
+        raise
 
-        # Use a unique identifier for the album art filename
-        unique_id = str(uuid.uuid4())
 
-        if file_type == 'mp3':
-            print("Attempting to process MP3 file for album art.")
+def upload_album_art(file_path, original_file_name):
+    """
+    Extract and upload album art for MP3 and FLAC files based on the original file name.
+    """
+    try:
+        album_art_data = None
+        file_extension = "jpg"  # Default to jpg if not explicitly provided
+
+        print(f"Analyzing file for album art: {file_path} (Original file: {original_file_name})")
+
+        # Use the original file name to determine the file type
+        if original_file_name.lower().endswith('.mp3'):
+            print("Detected MP3 file. Attempting to extract album art.")
             audio = MP3(file_path, ID3=ID3)
-            print(f"MP3 tags: {audio.tags.values()}")  # Debugging the tags
-
             for tag in audio.tags.values():
-                print(f"Checking tag: {tag}")
-                if isinstance(tag, APIC):  # MP3 album art
-                    album_art_path = f'/tmp/{unique_id}_album_art.jpg'
-                    with open(album_art_path, 'wb') as img:
-                        img.write(tag.data)
-                    print(f"MP3 album art extracted and saved to: {album_art_path}")
+                if isinstance(tag, APIC):
+                    album_art_data = tag.data
+                    file_extension = "jpg"
+                    print("Album art found in MP3 file.")
                     break
-        elif file_type == 'flac':
-            print("Attempting to process FLAC file for album art.")
+
+        elif original_file_name.lower().endswith('.flac'):
+            print("Detected FLAC file. Attempting to extract album art.")
             audio = FLAC(file_path)
-            print(f"FLAC pictures: {audio.pictures}")  # Debugging the pictures
+            if hasattr(audio, "pictures") and audio.pictures:
+                print(f"FLAC pictures found: {len(audio.pictures)}")
+                for picture in audio.pictures:
+                    print(f"Picture MIME type: {picture.mime}, Size: {len(picture.data)} bytes")
+                    album_art_data = picture.data
+                    file_extension = picture.mime.split("/")[-1]
+                    break
+            else:
+                print("No FLAC album art pictures found.")
 
-            for picture in audio.pictures:
-                print(f"Checking picture: {picture}")
-                album_art_path = f"/tmp/{unique_id}_album_art.{picture.mime.split('/')[-1]}"
-                with open(album_art_path, 'wb') as img:
-                    img.write(picture.data)
-                print(f"FLAC album art extracted and saved to: {album_art_path}")
-                break
-
-        if not album_art_path:
-            print("No album art found in the audio file. Using default album art.")
+        else:
+            print("Unsupported file type for album art extraction.")
             return DEFAULT_ALBUM_ART_S3_KEY
 
-        # Upload the album art to S3
-        album_art_s3_key = f"{s3_key_prefix}/{os.path.basename(album_art_path)}"
-        print(f"Prepared S3 key for album art: {album_art_s3_key}")
-        s3.upload_file(album_art_path, s3_bucket, album_art_s3_key)
-        print(f"Album art successfully uploaded to S3: {album_art_s3_key}")
+        # No album art found
+        if not album_art_data:
+            print("No album art data found in the file. Using default album art.")
+            return DEFAULT_ALBUM_ART_S3_KEY
+
+        # Save the album art to a temporary file
+        unique_id = str(uuid.uuid4())
+        album_art_path = f"/tmp/{unique_id}_album_art.{file_extension}"
+        with open(album_art_path, 'wb') as img:
+            img.write(album_art_data)
+        print(f"Album art saved locally: {album_art_path}")
+
+        # Upload album art to S3
+        album_art_s3_key = f"album_art/{os.path.basename(album_art_path)}"
+        s3.upload_file(album_art_path, AUDIO_BUCKET, album_art_s3_key)
+        print(f"Album art uploaded to S3 with key: {album_art_s3_key}")
 
         return album_art_s3_key
+
     except Exception as e:
         print(f"Error during album art extraction or upload: {e}")
         return DEFAULT_ALBUM_ART_S3_KEY
 
 
-def upload_picture_to_s3(picture_data, mime_type):
-    try:
-        with tempfile.NamedTemporaryFile(delete=False) as album_art_temp_file:
-            album_art_temp_file.write(picture_data)
-            album_art_temp_file.flush()
 
-            album_art_s3_key = f"album_art/{uuid.uuid4()}.jpg"
-            print(f"Uploading album art to S3: {album_art_s3_key}")
-            s3.upload_file(
-                album_art_temp_file.name,
-                AUDIO_BUCKET,
-                album_art_s3_key,
-                ExtraArgs={"ContentType": mime_type}
-            )
-            print(f"Album art uploaded to S3: {album_art_s3_key}")
-            return album_art_s3_key
-    except Exception as e:
-        print(f"Error saving album art to S3: {str(e)}")
-        return None
-
-def generate_presigned_url(s3_key):
-    """
-    Generate a presigned URL for a given S3 key.
-    """
+def save_metadata_to_dynamodb_batch(metadata_list):
+    table = dynamodb.Table(DYNAMODB_TABLE)
     try:
-        presigned_url = s3.generate_presigned_url(
-            'get_object',
-            Params={'Bucket': AUDIO_BUCKET, 'Key': s3_key},
-            ExpiresIn=3600  # URL valid for 1 hour
-        )
-        print(f"Generated presigned URL for S3 Key: {s3_key}")
-        return presigned_url
+        print("Saving metadata batch to DynamoDB...")
+        with table.batch_writer() as batch:
+            for metadata in metadata_list:
+                print(f"Saving metadata: {metadata}")
+                batch.put_item(Item=metadata)
+        print("Metadata batch saved successfully.")
     except Exception as e:
-        print(f"Error generating presigned URL: {str(e)}")
-        return None
-
-def save_metadata_to_dynamodb(metadata):
-    try:
-        print(f"Saving metadata to DynamoDB: {json.dumps(metadata)}")
-        table = dynamodb.Table(DYNAMODB_TABLE)
-        table.put_item(Item=metadata)
-        print("Metadata saved to DynamoDB successfully.")
-    except Exception as e:
-        print(f"Error saving metadata to DynamoDB: {str(e)}")
+        print(f"Error saving metadata batch to DynamoDB: {e}")
         raise
