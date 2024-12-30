@@ -1,9 +1,78 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
 
-Resources:
+Parameters:
+  MyBucketName:
+    Type: String
+    Default: "wave-loft-audio-bucket"
 
-  # API Gateway
+Resources:
+  # --------------------------------------------------
+  # 1) Cognito Identity Pool + Roles
+  # --------------------------------------------------
+  MyCognitoIdentityPool:
+    Type: AWS::Cognito::IdentityPool
+    Properties:
+      AllowUnauthenticatedIdentities: true
+      IdentityPoolName: "WaveLoftIdentityPool"
+
+  MyUnauthRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "WaveLoftCognitoUnauthRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                cognito-identity.amazonaws.com:aud: !Ref MyCognitoIdentityPool
+              ForAnyValue:StringLike:
+                cognito-identity.amazonaws.com:amr: unauthenticated
+      Path: "/"
+      Policies:
+        - PolicyName: "CognitoUnauthS3Policy"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:PutObject
+                  - s3:PutObjectAcl
+                Resource: !Sub "${AudioBucket.Arn}/*"
+
+  MyAuthRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: "WaveLoftCognitoAuthRole"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Federated: "cognito-identity.amazonaws.com"
+            Action: sts:AssumeRoleWithWebIdentity
+            Condition:
+              StringEquals:
+                cognito-identity.amazonaws.com:aud: !Ref MyCognitoIdentityPool
+              ForAnyValue:StringLike:
+                cognito-identity.amazonaws.com:amr: authenticated
+      Path: "/"
+
+  MyIdentityPoolRoleAttachment:
+    Type: AWS::Cognito::IdentityPoolRoleAttachment
+    Properties:
+      IdentityPoolId: !Ref MyCognitoIdentityPool
+      Roles:
+        unauthenticated: !GetAtt MyUnauthRole.Arn
+        authenticated: !GetAtt MyAuthRole.Arn
+
+  # --------------------------------------------------
+  # 2) WaveLoftApi + DynamoDB + S3 Bucket, etc.
+  # --------------------------------------------------
   WaveLoftApi:
     Type: AWS::Serverless::Api
     Properties:
@@ -14,7 +83,6 @@ Resources:
         AllowHeaders: "'Content-Type,Authorization'"
         AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
 
-  # DynamoDB Table
   TracksTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -27,11 +95,61 @@ Resources:
           KeyType: HASH
       BillingMode: PAY_PER_REQUEST
 
-  # S3 Bucket
-  AudioBucket:
+  LogBucket:
     Type: AWS::S3::Bucket
     Properties:
+      BucketName: wave-loft-audio-bucket-logs
+      LifecycleConfiguration:
+        Rules:
+          - Id: "TemporaryLogRetention"
+            Status: Enabled
+            ExpirationInDays: 2
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+  LogBucketPolicy:
+    Type: AWS::S3::BucketPolicy
+    Properties:
+      Bucket: !Ref LogBucket
+      PolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: s3.amazonaws.com
+            Action: "s3:PutObject"
+            Resource: !Sub "${LogBucket.Arn}/logs/*"
+            Condition:
+              StringEquals:
+                aws:SourceAccount: !Ref AWS::AccountId
+              ArnLike:
+                aws:SourceArn: !Sub "arn:aws:s3:::${LogBucket}"
+
+  AudioBucket:
+    Type: AWS::S3::Bucket
+    DependsOn: LogBucket
+    Properties:
       BucketName: wave-loft-audio-bucket
+      LifecycleConfiguration:
+        Rules:
+          - Id: "TransitionFLACtoIntelligentTiering"
+            Prefix: "flac/"
+            Status: Enabled
+            Transitions:
+              - StorageClass: INTELLIGENT_TIERING
+                TransitionInDays: 30
+          - Id: "TransitionFLACtoGlacierDeepArchive"
+            Prefix: "flac/"
+            Status: Enabled
+            Transitions:
+              - StorageClass: DEEP_ARCHIVE
+                TransitionInDays: 180
       CorsConfiguration:
         CorsRules:
           - AllowedOrigins:
@@ -45,8 +163,22 @@ Resources:
             ExposedHeaders:
               - ETag
             MaxAge: 3000
+      LoggingConfiguration:
+        DestinationBucketName: wave-loft-audio-bucket-logs
+        LogFilePrefix: "logs/audio/"
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
 
-  # Lambda Layers
+  # --------------------------------------------------
+  # Utility Layers
+  # -------------------------------------------------
+
   UtilsLayer:
     Type: AWS::Lambda::LayerVersion
     Properties:
@@ -57,15 +189,31 @@ Resources:
         - python3.12
       Description: "Layer for CORS utilities"
 
-  # Create Track Lambda Function
+  FFmpegLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      Description: "FFmpeg static layer"
+      Content:
+        # This is wherever you uploaded ffmpeg-layer.zip
+        S3Bucket: utilitary-bucket
+        S3Key: utils/ffmpeg-layer.zip
+      CompatibleRuntimes:
+        - python3.12
+      LicenseInfo: "MIT"  # or omitted
+
+  # --------------------------------------------------
+  # 3) Lambdas
+  # --------------------------------------------------
   CreateTrackFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: create_track.lambda_handler
       Runtime: python3.12
       CodeUri: ./tracks
-      MemorySize: 256
-      Timeout: 30
+      MemorySize: 2048
+      Timeout: 300
+      EphemeralStorage:
+        Size: 10240
       Role: !GetAtt CreateTrackFunctionRole.Arn
       Policies:
         - DynamoDBCrudPolicy:
@@ -100,23 +248,21 @@ Resources:
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
-              # Permissions for CloudWatch Logs
+              # CloudWatch Logs
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: "arn:aws:logs:*:*:*"
-
-              # Permissions for DynamoDB (Tracks table)
+              # DynamoDB
               - Effect: Allow
                 Action:
                   - dynamodb:PutItem
                   - dynamodb:UpdateItem
                   - dynamodb:BatchWriteItem
                 Resource: !GetAtt TracksTable.Arn
-
-              # Permissions for S3 (wave-loft-audio-bucket)
+              # S3
               - Effect: Allow
                 Action:
                   - s3:GetObject
@@ -132,7 +278,6 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/POST/tracks
 
-  # Update Track Lambda Function
   UpdateTrackFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -192,7 +337,6 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/PUT/tracks/{id}
 
-  # List Tracks Lambda Function
   ListTracksFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -243,8 +387,8 @@ Resources:
                 Resource: "arn:aws:logs:*:*:*"
               - Effect: Allow
                 Action:
-                  - dynamodb:Scan  # Add Scan permission
-                  - dynamodb:GetItem  # Optional: if your function reads specific items
+                  - dynamodb:Scan
+                  - dynamodb:GetItem
                   - dynamodb:Query
                 Resource: !GetAtt TracksTable.Arn
 
@@ -256,7 +400,6 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/GET/tracks
 
-  # Delete Track Lambda Function
   DeleteTrackFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -316,7 +459,6 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/DELETE/tracks/{id}
 
-    # Upload Audio Function
   UploadAudioFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -360,15 +502,14 @@ Resources:
                   - s3:PutObject
                 Resource: !Sub "${AudioBucket.Arn}/*"
 
-  # Generate Presigned URL for Upload
   GeneratePresignedUrlUploadFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: generate_presigned_url_upload.lambda_handler
       Runtime: python3.12
       CodeUri: ./audio
-      MemorySize: 128
-      Timeout: 3
+      MemorySize: 512
+      Timeout: 60
       Role: !GetAtt GeneratePresignedUrlUploadFunctionRole.Arn
       Environment:
         Variables:
@@ -401,28 +542,28 @@ Resources:
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
+              # CloudWatch Logs
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: arn:aws:logs:*:*:*
+              # S3
               - Effect: Allow
                 Action:
                   - s3:PutObject
                   - s3:GetObject
                 Resource: !Sub "${AudioBucket.Arn}/*"
 
-
-  # Generate Presigned URL for Download
   GeneratePresignedUrlDownloadFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: generate_presigned_url_download.lambda_handler
       Runtime: python3.12
       CodeUri: ./audio
-      MemorySize: 128
-      Timeout: 3
+      MemorySize: 512
+      Timeout: 60
       Role: !GetAtt GeneratePresignedUrlDownloadFunctionRole.Arn
       Environment:
         Variables:
@@ -458,22 +599,157 @@ Resources:
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
+              # CloudWatch Logs
               - Effect: Allow
                 Action:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: arn:aws:logs:*:*:*
+              # S3
               - Effect: Allow
                 Action:
                   - s3:GetObject
-                  - s3:ListBucket  # Add ListBucket action
+                  - s3:ListBucket
                 Resource:
-                  - !Sub "${AudioBucket.Arn}"       # Bucket-level action
-                  - !Sub "${AudioBucket.Arn}/*"    # Object-level action
+                  - !Sub "${AudioBucket.Arn}"
+                  - !Sub "${AudioBucket.Arn}/*"
+              # DynamoDB
               - Effect: Allow
                 Action:
-                  - dynamodb:Scan  # Add Scan permission
+                  - dynamodb:Scan
                   - dynamodb:GetItem
                   - dynamodb:Query
                 Resource: !GetAtt TracksTable.Arn
+
+    # --------------------------------------------------
+  # 4) TranscodeFlacFunction
+  # --------------------------------------------------
+  TranscodeFlacFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: transcode.flac_to_mp3_handler
+      Runtime: python3.12
+      CodeUri: ./transcode
+      MemorySize: 2048
+      Timeout: 300
+      Layers:
+        - !Ref FFmpegLayer
+      Events:
+        FlacUpload:
+          Type: S3
+          Properties:
+            Bucket: !Ref AudioBucket
+            Events:
+              - s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: flac/
+      Environment:
+        Variables:
+          BUCKET_NAME: !Ref MyBucketName
+          DYNAMODB_TABLE: Tracks
+      Policies:
+        - S3ReadPolicy:
+            BucketName: !Ref MyBucketName
+        - S3WritePolicy:
+            BucketName: !Ref MyBucketName
+        - Statement:
+            - Effect: Allow
+              Action:
+                - logs:CreateLogGroup
+                - logs:CreateLogStream
+                - logs:PutLogEvents
+              Resource: "arn:aws:logs:*:*:*"
+        - Statement:
+            - Effect: Allow
+              Action:
+                - dynamodb:UpdateItem
+              Resource: !GetAtt TracksTable.Arn
+
+  TranscodeFlacPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: "lambda:InvokeFunction"
+      FunctionName: !GetAtt TranscodeFlacFunction.Arn
+      Principal: "s3.amazonaws.com"
+      SourceArn: !Sub "arn:aws:s3:::${AudioBucket}"
+
+
+  # 1) The new function resource
+  CreateTrackItemFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: create_track_item.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks  # or a subfolder if you want, e.g. ./track_items
+      MemorySize: 128
+      Timeout: 3
+      Role: !GetAtt CreateTrackItemFunctionRole.Arn
+      Events:
+        CreateTrackItemApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /trackItems
+            Method: POST
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks  # your existing table name
+      Tracing: PassThrough
+
+  # 2) The function's Role
+  CreateTrackItemFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: CreateTrackItemPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # CloudWatch logs
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+
+              # DynamoDB: we just need putItem (and maybe getItem) on the Tracks table
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                Resource: !GetAtt TracksTable.Arn
+
+  # 3) The permission from API Gateway
+  CreateTrackItemApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref CreateTrackItemFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WaveLoftApi}/*/POST/trackItems"
+
+
+Outputs:
+  CognitoIdentityPoolId:
+    Description: "Use this in your front-end code for fromCognitoIdentityPool(...)"
+    Value: !Ref MyCognitoIdentityPool
+
+  S3BucketName:
+    Description: "Wave Loft Audio Bucket"
+    Value: !Ref AudioBucket
+
+  WaveLoftApiUrl:
+    Description: "API Gateway endpoint"
+    Value: !Sub "https://${WaveLoftApi}.execute-api.${AWS::Region}.amazonaws.com/Prod"

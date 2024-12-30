@@ -7,7 +7,7 @@ architecture = "x86_64"
 handler = "create_track.lambda_handler"
 manifest_hash = "04c920ddf947793b92a18d972ebfbc7b"
 packagetype = "Zip"
-functions = ["CreateTrackFunction", "UpdateTrackFunction", "ListTracksFunction", "DeleteTrackFunction"]
+functions = ["CreateTrackFunction", "UpdateTrackFunction", "ListTracksFunction", "DeleteTrackFunction", "CreateTrackItemFunction"]
 
 [function_build_definitions.7d6acbaf-1f02-423c-a84f-ee4063e0ae81]
 codeuri = "C:\\stuff\\projects\\demo-app\\audio"
@@ -17,5 +17,14 @@ handler = "upload_audio.lambda_handler"
 manifest_hash = "04c920ddf947793b92a18d972ebfbc7b"
 packagetype = "Zip"
 functions = ["UploadAudioFunction", "GeneratePresignedUrlUploadFunction", "GeneratePresignedUrlDownloadFunction"]
+
+[function_build_definitions.6ff987f6-1f38-46c1-b619-b8ec518ef3ef]
+codeuri = "C:\\stuff\\projects\\demo-app\\transcode"
+runtime = "python3.12"
+architecture = "x86_64"
+handler = "transcode.flac_to_mp3_handler"
+manifest_hash = ""
+packagetype = "Zip"
+functions = ["TranscodeFlacFunction"]
 
 [layer_build_definitions]

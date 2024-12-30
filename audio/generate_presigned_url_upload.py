@@ -54,7 +54,7 @@ def lambda_handler(event, context):
                     'Key': s3_key,
                     'ContentType': content_type
                 },
-                ExpiresIn=600  # URL valid for 10 minutes
+                ExpiresIn=7200  # URL valid for 60 minutes
             )
 
             presigned_urls.append({

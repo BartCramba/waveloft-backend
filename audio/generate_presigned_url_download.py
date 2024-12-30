@@ -2,12 +2,24 @@ import boto3
 import os
 import json
 from decimal import Decimal
+
+from botocore.config import Config
 from botocore.exceptions import ClientError
 from utils.cors_utils import build_response
 
 # Initialize AWS resources
 dynamodb = boto3.resource('dynamodb')
-s3 = boto3.client('s3')
+my_config = Config(
+    region_name="eu-north-1",
+    signature_version="s3v4",
+    s3={'addressing_style': 'virtual'}  # or 'path'
+)
+
+s3 = boto3.client(
+    "s3",
+    config=my_config,
+    endpoint_url="https://s3.eu-north-1.amazonaws.com"
+)
 
 # Environment variables
 TABLE_NAME = os.environ['DYNAMODB_TABLE']
