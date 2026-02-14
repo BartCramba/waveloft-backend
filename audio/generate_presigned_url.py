@@ -2,7 +2,7 @@ import boto3
 import os
 import json
 from botocore.exceptions import ClientError
-from utils.cors_utils import build_response
+from cors_utils import build_response
 
 # Initialize AWS resources
 dynamodb = boto3.resource('dynamodb')

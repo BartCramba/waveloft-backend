@@ -2,7 +2,7 @@ import boto3
 import os
 import json
 import uuid
-from utils.cors_utils import build_response
+from cors_utils import build_response
 
 # Initialize S3 client
 s3 = boto3.client('s3')

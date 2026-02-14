@@ -5,6 +5,10 @@ Parameters:
   MyBucketName:
     Type: String
     Default: "wave-loft-audio-bucket"
+  # constant partition key for the learning index
+  LearningPK:
+    Type: String
+    Default: DJ
 
 Resources:
   # --------------------------------------------------
@@ -42,7 +46,7 @@ Resources:
                 Action:
                   - s3:PutObject
                   - s3:PutObjectAcl
-                Resource: !Sub "${AudioBucket.Arn}/*"
+                Resource: !Sub "arn:aws:s3:::${MyBucketName}/*"
 
   MyAuthRole:
     Type: AWS::IAM::Role
@@ -83,17 +87,31 @@ Resources:
         AllowHeaders: "'Content-Type,Authorization'"
         AllowMethods: "'OPTIONS,GET,POST,PUT,DELETE'"
 
+  ### 1.1 add attributes so CFN knows about them (table is still schemaless at runtime)
   TracksTable:
     Type: AWS::DynamoDB::Table
     Properties:
       TableName: Tracks
       AttributeDefinitions:
-        - AttributeName: id
+        - AttributeName: id            # HASH (already there)
+          AttributeType: S
+        - AttributeName: pkLearning    # HASH for GSI (constant “DJ”)
+          AttributeType: S
+        - AttributeName: nextReviewAt  # RANGE for GSI (ISO string)
           AttributeType: S
       KeySchema:
         - AttributeName: id
           KeyType: HASH
-      BillingMode: PAY_PER_REQUEST
+      GlobalSecondaryIndexes:
+        - IndexName: LearningIndex
+          KeySchema:
+            - AttributeName: pkLearning
+              KeyType: HASH
+            - AttributeName: nextReviewAt
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+      BillingMode: PAY_PER_REQUEST  # still on-demand
 
   LogBucket:
     Type: AWS::S3::Bucket
@@ -135,7 +153,7 @@ Resources:
     Type: AWS::S3::Bucket
     DependsOn: LogBucket
     Properties:
-      BucketName: wave-loft-audio-bucket
+      BucketName: !Ref MyBucketName
       LifecycleConfiguration:
         Rules:
           - Id: "TransitionFLACtoIntelligentTiering"
@@ -175,19 +193,32 @@ Resources:
         IgnorePublicAcls: true
         RestrictPublicBuckets: true
 
+  # ────────────────────────────────────────────────────────────
+  #  NEW 1)  Rich-JSON cold store (TrackDetails table)
+  # ────────────────────────────────────────────────────────────
+  TrackDetailsTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: TrackDetails                # keep it explicit for easy joins
+      AttributeDefinitions:
+        - AttributeName: trackId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: trackId
+          KeyType: HASH
+      BillingMode: PAY_PER_REQUEST           # ~0.25 USD / 100 000 items / mo
+
   # --------------------------------------------------
   # Utility Layers
   # -------------------------------------------------
 
   UtilsLayer:
-    Type: AWS::Lambda::LayerVersion
+    Type: AWS::Serverless::LayerVersion
     Properties:
-      Content:
-        S3Bucket: utilitary-bucket
-        S3Key: utils/cors_utils.zip
+      ContentUri: utils
       CompatibleRuntimes:
         - python3.12
-      Description: "Layer for CORS utilities"
+      Description: "Layer for CORS utilities + SM-2 latest"
 
   FFmpegLayer:
     Type: AWS::Lambda::LayerVersion
@@ -229,6 +260,7 @@ Resources:
         Variables:
           DYNAMODB_TABLE: Tracks
           S3_BUCKET: wave-loft-audio-bucket
+          LEARNING_PK: !Ref LearningPK
       Tracing: PassThrough
       Layers:
         - !Ref UtilsLayer
@@ -268,7 +300,7 @@ Resources:
                   - s3:GetObject
                   - s3:PutObject
                   - s3:HeadObject
-                Resource: !Sub "${AudioBucket.Arn}/*"
+                Resource: !Sub "arn:aws:s3:::${MyBucketName}/*"
 
   CreateTrackApiPermission:
     Type: AWS::Lambda::Permission
@@ -459,6 +491,155 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: arn:aws:execute-api:eu-north-1:739275437165:6mrwx5vn53/*/DELETE/tracks/{id}
 
+  # --------------------------------------------------
+  # Get-Due-Tracks  (GET /due)
+  # --------------------------------------------------
+  GetDueTracksFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get_due_tracks.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks
+      MemorySize: 256
+      Timeout: 5
+      Role: !GetAtt GetDueTracksFunctionRole.Arn
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks
+          BUCKET_NAME: wave-loft-audio-bucket
+          LEARNING_PK: !Ref LearningPK
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Tracks    # lets the Role read/query
+        - S3ReadPolicy:
+            BucketName: wave-loft-audio-bucket  # for presigned URL
+      Events:
+        GetDueTracksApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /due
+            Method: GET
+      Tracing: PassThrough
+      Layers:
+        - !Ref UtilsLayer
+
+  GetDueTracksFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: GetDueTracksPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # CloudWatch Logs
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              # DynamoDB read
+              # 2) Query the table *and* the index
+              - Effect: Allow
+                Action: dynamodb:Query
+                Resource:
+                  - !GetAtt TracksTable.Arn
+                  - !Sub "${TracksTable.Arn}/index/LearningIndex"
+              - Effect: Allow
+                Action:
+                  - dynamodb:Query
+                  - dynamodb:GetItem
+                Resource: !GetAtt TracksTable.Arn
+              # S3 presign requires GetObject permission
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                Resource: !Sub "arn:aws:s3:::${MyBucketName}/*"
+
+  GetDueTracksApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref GetDueTracksFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WaveLoftApi}/*/GET/due"
+
+  # --------------------------------------------------
+  # Update-Stats  (POST /grade)
+  # --------------------------------------------------
+  UpdateStatsFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: update_stats.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks
+      MemorySize: 256
+      Timeout: 5
+      Role: !GetAtt UpdateStatsFunctionRole.Arn
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks
+          LEARNING_PK: !Ref LearningPK
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: Tracks    # need GetItem + UpdateItem
+      Events:
+        UpdateStatsApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /grade
+            Method: POST
+      Tracing: PassThrough
+      Layers:
+        - !Ref UtilsLayer
+
+  UpdateStatsFunctionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: UpdateStatsPolicy
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              # CloudWatch Logs
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "arn:aws:logs:*:*:*"
+              # DynamoDB read-write
+              - Effect: Allow
+                Action:
+                  - dynamodb:GetItem
+                  - dynamodb:UpdateItem
+                Resource: !GetAtt TracksTable.Arn
+
+  UpdateStatsApiPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !Ref UpdateStatsFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WaveLoftApi}/*/POST/grade"
+
+
   UploadAudioFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -500,7 +681,7 @@ Resources:
               - Effect: Allow
                 Action:
                   - s3:PutObject
-                Resource: !Sub "${AudioBucket.Arn}/*"
+                Resource: !Sub "arn:aws:s3:::${MyBucketName}/*"
 
   GeneratePresignedUrlUploadFunction:
     Type: AWS::Serverless::Function
@@ -554,7 +735,7 @@ Resources:
                 Action:
                   - s3:PutObject
                   - s3:GetObject
-                Resource: !Sub "${AudioBucket.Arn}/*"
+                Resource: !Sub "arn:aws:s3:::${MyBucketName}/*"
 
   GeneratePresignedUrlDownloadFunction:
     Type: AWS::Serverless::Function
@@ -612,8 +793,8 @@ Resources:
                   - s3:GetObject
                   - s3:ListBucket
                 Resource:
-                  - !Sub "${AudioBucket.Arn}"
-                  - !Sub "${AudioBucket.Arn}/*"
+                  - !Sub "arn:aws:s3:::${MyBucketName}"
+                  - !Sub "arn:aws:s3:::${MyBucketName}/*"
               # DynamoDB
               - Effect: Allow
                 Action:
@@ -740,6 +921,77 @@ Resources:
       Principal: apigateway.amazonaws.com
       SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${WaveLoftApi}/*/POST/trackItems"
 
+    # ────────────────────────────────────────────────────────────
+  # DetailsEnricher Lambda – let SAM create the IAM role
+  # ────────────────────────────────────────────────────────────
+  DetailsEnricherFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: ./tracks
+      Handler: details_enricher.lambda_handler
+      Runtime: python3.12
+      MemorySize: 256
+      Timeout: 30
+
+      Policies:
+        - S3ReadPolicy:          # GetObject on the whole bucket
+            BucketName: !Ref MyBucketName
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TrackDetailsTable
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TracksTable
+
+      Events:
+        SidecarUploaded:
+          Type: S3
+          Properties:
+            Bucket: !Ref AudioBucket
+            Events: s3:ObjectCreated:*
+            Filter:
+              S3Key:
+                Rules:
+                  - Name: prefix
+                    Value: meta/
+
+      Environment:
+        Variables:
+          TRACKS_TABLE:  !Ref TracksTable
+          DETAILS_TABLE: !Ref TrackDetailsTable
+      Layers:
+        - !Ref UtilsLayer
+      Tracing: PassThrough
+
+  # S3 → Lambda invoke permission (SAM usually creates it automatically,
+  # but adding it explicitly makes single-file reuse easier)
+  DetailsEnricherPermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      Action: lambda:InvokeFunction
+      FunctionName: !GetAtt DetailsEnricherFunction.Arn
+      Principal: s3.amazonaws.com
+      SourceArn: !Sub "arn:aws:s3:::${AudioBucket}"
+
+  LookupTrackIdFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lookup_by_filename.lambda_handler
+      Runtime: python3.12
+      CodeUri: ./tracks
+      MemorySize: 128
+      Timeout: 3
+      Policies:
+        - DynamoDBReadPolicy:
+            TableName: Tracks
+      Events:
+        LookupTrackIdApi:
+          Type: Api
+          Properties:
+            RestApiId: !Ref WaveLoftApi
+            Path: /lookup
+            Method: GET
+      Environment:
+        Variables:
+          DYNAMODB_TABLE: Tracks
 
 Outputs:
   CognitoIdentityPoolId:

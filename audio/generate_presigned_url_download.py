@@ -1,11 +1,10 @@
 import boto3
 import os
 import json
-from decimal import Decimal
 
 from botocore.config import Config
 from botocore.exceptions import ClientError
-from utils.cors_utils import build_response
+from cors_utils import build_response
 
 # Initialize AWS resources
 dynamodb = boto3.resource('dynamodb')
@@ -24,14 +23,6 @@ s3 = boto3.client(
 # Environment variables
 TABLE_NAME = os.environ['DYNAMODB_TABLE']
 BUCKET_NAME = os.environ['BUCKET_NAME']
-
-# Custom JSON Encoder to handle Decimal objects
-class DecimalEncoder(json.JSONEncoder):
-    def default(self, obj):
-        if isinstance(obj, Decimal):
-            return float(obj)  # Convert Decimal to float for JSON serialization
-        return super(DecimalEncoder, self).default(obj)
-
 
 def fetch_dynamodb_items():
     """
@@ -89,9 +80,9 @@ def lambda_handler(event, context):
         ]
 
         # Step 3: Return the enhanced track list
-        return build_response(200, json.dumps({"tracks": enhanced_tracks}, cls=DecimalEncoder))
+        return build_response(200, {"tracks": enhanced_tracks})
 
     except ClientError as e:
-        return build_response(500, json.dumps({"error": e.response['Error']['Message']}))
+        return build_response(500, {"error": e.response["Error"]["Message"]})
     except Exception as e:
-        return build_response(500, json.dumps({"error": str(e)}))
+        return build_response(500, {"error": str(e)})

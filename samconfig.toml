@@ -18,10 +18,11 @@ confirm_changeset = true
 resolve_s3 = true
 s3_prefix = "music-api-stack"
 region = "eu-north-1"
-profile = "pique"
+profile = "admin-user"
 image_repositories = []
 stack_name = "music-api-stack"
-disable_rollback = true
+disable_rollback = false
+parameter_overrides = "MyBucketName=\"wave-loft-audio-bucket\" LearningPK=\"DJ\""
 
 [default.package.parameters]
 resolve_s3 = true

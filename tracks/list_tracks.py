@@ -3,7 +3,7 @@ import os
 import boto3
 import json
 from botocore.exceptions import ClientError
-from utils.cors_utils import build_response  # Import from your Lambda Layer
+from cors_utils import build_response  # Import from your Lambda Layer
 
 TABLE_NAME = os.environ['DYNAMODB_TABLE']
 BUCKET_NAME = os.environ['BUCKET_NAME']

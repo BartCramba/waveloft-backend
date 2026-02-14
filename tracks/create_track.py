@@ -1,3 +1,5 @@
+from decimal import Decimal
+
 import boto3
 import os
 import json
@@ -7,7 +9,8 @@ from mutagen.flac import FLAC
 from mutagen.id3 import ID3, APIC
 from mutagen.mp3 import MP3
 from datetime import datetime, timezone
-from utils.cors_utils import build_response
+from cors_utils import build_response
+from cors_utils import _DecimalEncoder
 
 dynamodb = boto3.resource('dynamodb')
 s3 = boto3.client('s3')
@@ -71,16 +74,25 @@ def lambda_handler(event, context):
         save_metadata_to_dynamodb_batch(responses)
         print("All files processed & saved to DynamoDB successfully.")
 
-        # Return success
-        return build_response(200, json.dumps({
+        return build_response(200, {
+            "success": True,
             "message": "Tracks created successfully",
-            "tracks": responses
-        }))
+            "tracks":  responses,
+        })
 
     except Exception as e:
         print(f"[create_track] ERROR: {str(e)}")
         return build_response(500, json.dumps({"error": str(e)}))
 
+DEFAULT_LEARNING = {
+    "ease": Decimal("2.5"),
+    "reps": 0,
+    "interval": 0,
+    "nextReviewAt": "1970-01-01T00:00:00Z",
+    "lastGuessAt": None,
+    # constant folder for the GSI; keep in sync with template.yaml
+    "pkLearning": os.environ.get("LEARNING_PK", "DJ")
+}
 
 def process_audio_file(track_id, file_name, audio_s3_key):
     """
@@ -112,7 +124,14 @@ def process_audio_file(track_id, file_name, audio_s3_key):
             "uploadedAt": datetime.now(timezone.utc).isoformat(),
         }
 
-        print(f"File {file_name} -> full_metadata: {json.dumps(full_metadata, indent=2)}")
+        full_metadata.update(DEFAULT_LEARNING)
+
+        print(
+            "File",
+            file_name,
+            "->",
+            json.dumps(full_metadata, indent=2, cls=_DecimalEncoder),
+        )
         return full_metadata
 
     except Exception as e:
