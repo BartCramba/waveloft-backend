@@ -1,130 +1,213 @@
-# demo-app
+# WaveLoft Backend
 
-This project contains source code and supporting files for a serverless application that you can deploy with the SAM CLI. It includes the following files and folders.
+Serverless REST API powering the WaveLoft Electron DJ app. Manages a track library stored in S3 with metadata in DynamoDB and implements a **spaced-repetition "Guess The Track"** learning system (SM-2 algorithm).
 
-- hello_world - Code for the application's Lambda function.
-- events - Invocation events that you can use to invoke the function.
-- tests - Unit tests for the application code. 
-- template.yaml - A template that defines the application's AWS resources.
+## How It Connects to the Electron App
 
-The application uses several AWS resources, including Lambda functions and an API Gateway API. These resources are defined in the `template.yaml` file in this project. You can update the template to add AWS resources through the same deployment process that updates your application code.
+```
+Electron App                        AWS Cloud
++--------------+    HTTPS     +------------------+     +-----------+
+| WaveLoft UI  | ----------> | API Gateway      | --> | Lambda    |
+| (local cache)|             | (REST, /Prod)    |     | functions |
++--------------+    S3       +------------------+     +-----------+
+       |        presigned          |                        |
+       +------------------------->| S3 Bucket              | DynamoDB
+         upload / download        | (wave-loft-audio-bucket)|
+                                  +------------------------+
+```
 
-If you prefer to use an integrated development environment (IDE) to build and test your application, you can use the AWS Toolkit.  
-The AWS Toolkit is an open source plug-in for popular IDEs that uses the SAM CLI to build and deploy serverless applications on AWS. The AWS Toolkit also adds a simplified step-through debugging experience for Lambda function code. See the following links to get started.
+1. The Electron app uploads audio (FLAC/MP3) to S3 via **presigned URLs** obtained from the API.
+2. FLAC uploads trigger automatic **transcoding to 320 kbps MP3** via a Lambda + FFmpeg.
+3. The app calls REST endpoints for CRUD, retrieves presigned download URLs, and plays cached MP3s.
+4. The "Guess The Track" feature uses `GET /due` and `POST /grade` to drive spaced-repetition review scheduling.
 
-* [CLion](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [GoLand](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [IntelliJ](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [WebStorm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [Rider](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [PhpStorm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [PyCharm](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [RubyMine](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [DataGrip](https://docs.aws.amazon.com/toolkit-for-jetbrains/latest/userguide/welcome.html)
-* [VS Code](https://docs.aws.amazon.com/toolkit-for-vscode/latest/userguide/welcome.html)
-* [Visual Studio](https://docs.aws.amazon.com/toolkit-for-visual-studio/latest/user-guide/welcome.html)
+---
 
-## Deploy the sample application
+## Tech Stack
 
-The Serverless Application Model Command Line Interface (SAM CLI) is an extension of the AWS CLI that adds functionality for building and testing Lambda applications. It uses Docker to run your functions in an Amazon Linux environment that matches Lambda. It can also emulate your application's build environment and API.
+| Layer | Technology |
+|-------|-----------|
+| Language | Python 3.12 |
+| IaC | AWS SAM (CloudFormation) |
+| Compute | AWS Lambda (13 functions) |
+| API | Amazon API Gateway (REST) |
+| Database | Amazon DynamoDB (2 tables, 1 GSI) |
+| Storage | Amazon S3 |
+| Auth | Amazon Cognito Identity Pool (unauthenticated uploads) |
+| Audio processing | Mutagen (metadata), FFmpeg (transcoding) |
+| Testing | pytest + moto (AWS mocking) |
 
-To use the SAM CLI, you need the following tools.
+---
 
-* SAM CLI - [Install the SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
-* [Python 3 installed](https://www.python.org/downloads/)
-* Docker - [Install Docker community edition](https://hub.docker.com/search/?type=edition&offering=community)
+## Local Setup
 
-To build and deploy your application for the first time, run the following in your shell:
+### Prerequisites
+
+- **Python 3.12+**
+- **AWS SAM CLI** ([install guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html))
+- **Docker** (for `sam build --use-container` and `sam local`)
+- **AWS CLI** configured with a profile named `admin-user` (or edit `samconfig.toml:21`)
+
+### Install Dependencies
+
+```bash
+# Install test dependencies
+pip install -r tests/requirements.txt
+
+# SAM will install Lambda dependencies (mutagen) automatically during build
+```
+
+### Build
 
 ```bash
 sam build --use-container
+```
+
+The build is cached and parallel by default (`samconfig.toml:9-10`).
+
+### Run Locally
+
+```bash
+# Start the full API locally on port 3000
+sam local start-api
+
+# Invoke a single function with a test event
+sam local invoke CreateTrackFunction --event events/event.json
+```
+
+Warm containers are enabled for local development (`samconfig.toml:34-37`).
+
+### Run Tests
+
+```bash
+# Unit tests
+python -m pytest tests/unit -v
+
+# Integration tests (requires a deployed stack)
+AWS_SAM_STACK_NAME="music-api-stack" python -m pytest tests/integration -v
+```
+
+---
+
+## Configuration
+
+### Environment Variables (set per-Lambda in `template.yaml`)
+
+| Variable | Default | Used By | Description |
+|----------|---------|---------|-------------|
+| `DYNAMODB_TABLE` | `Tracks` | Most functions | Primary DynamoDB table name |
+| `S3_BUCKET` / `BUCKET_NAME` | `wave-loft-audio-bucket` | Audio + track functions | S3 bucket for audio and art |
+| `LEARNING_PK` | `DJ` | Due/grade functions | Constant partition key for the learning GSI |
+| `TRACKS_TABLE` | `Tracks` | DetailsEnricher | Tracks table (ref) |
+| `DETAILS_TABLE` | `TrackDetails` | DetailsEnricher | Rich metadata cold-store table |
+
+### SAM Parameters (`template.yaml:4-11`)
+
+| Parameter | Default |
+|-----------|---------|
+| `MyBucketName` | `wave-loft-audio-bucket` |
+| `LearningPK` | `DJ` |
+
+### Deployment Config (`samconfig.toml`)
+
+| Key | Value |
+|-----|-------|
+| Stack name | `music-api-stack` |
+| Region | `eu-north-1` |
+| AWS profile | `admin-user` |
+| IAM capability | `CAPABILITY_IAM` |
+
+---
+
+## API Quick Reference
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `POST` | `/tracks` | Create tracks from uploaded S3 audio files |
+| `GET` | `/tracks` | List all tracks (no presigned URLs) |
+| `PUT` | `/tracks/{id}` | Update track name/artist |
+| `DELETE` | `/tracks/{id}` | Delete a track |
+| `POST` | `/trackItems` | Create a placeholder track item |
+| `GET` | `/due` | Get tracks due for spaced-repetition review |
+| `POST` | `/grade` | Submit a grade (0-5) for a reviewed track |
+| `GET` | `/lookup?fileName=...` | Find track ID by filename |
+| `POST` | `/upload/presigned` | Get presigned S3 upload URLs |
+| `GET` | `/download/presigned` | Get presigned S3 download URLs for all tracks |
+| `POST` | `/upload` | Direct multipart audio upload |
+
+See [docs/API_REFERENCE.md](docs/API_REFERENCE.md) for full request/response schemas.
+
+### Quick Examples
+
+**Create tracks** (after uploading audio to S3):
+```bash
+curl -X POST https://<api-id>.execute-api.eu-north-1.amazonaws.com/Prod/tracks \
+  -H "Content-Type: application/json" \
+  -d '{
+    "files": [{
+      "trackId": "550e8400-e29b-41d4-a716-446655440000",
+      "fileName": "DeepHouse_Mix.flac",
+      "s3Key": "flac/DeepHouse_Mix.flac"
+    }]
+  }'
+```
+
+**Get presigned download URLs**:
+```bash
+curl https://<api-id>.execute-api.eu-north-1.amazonaws.com/Prod/download/presigned
+```
+
+**Submit a guess grade**:
+```bash
+curl -X POST https://<api-id>.execute-api.eu-north-1.amazonaws.com/Prod/grade \
+  -H "Content-Type: application/json" \
+  -d '{"trackId": "550e8400-e29b-41d4-a716-446655440000", "grade": 4}'
+```
+
+---
+
+## Deployment
+
+```bash
+# First-time guided deploy
 sam deploy --guided
+
+# Subsequent deploys (uses samconfig.toml)
+sam deploy
+
+# Validate template
+sam validate --lint
 ```
 
-The first command will build the source of your application. The second command will package and deploy your application to AWS, with a series of prompts:
+The API Gateway endpoint URL is printed in the CloudFormation Outputs as `WaveLoftApiUrl` (`template.yaml:1005-1007`).
 
-* **Stack Name**: The name of the stack to deploy to CloudFormation. This should be unique to your account and region, and a good starting point would be something matching your project name.
-* **AWS Region**: The AWS region you want to deploy your app to.
-* **Confirm changes before deploy**: If set to yes, any change sets will be shown to you before execution for manual review. If set to no, the AWS SAM CLI will automatically deploy application changes.
-* **Allow SAM CLI IAM role creation**: Many AWS SAM templates, including this example, create AWS IAM roles required for the AWS Lambda function(s) included to access AWS services. By default, these are scoped down to minimum required permissions. To deploy an AWS CloudFormation stack which creates or modifies IAM roles, the `CAPABILITY_IAM` value for `capabilities` must be provided. If permission isn't provided through this prompt, to deploy this example you must explicitly pass `--capabilities CAPABILITY_IAM` to the `sam deploy` command.
-* **Save arguments to samconfig.toml**: If set to yes, your choices will be saved to a configuration file inside the project, so that in the future you can just re-run `sam deploy` without parameters to deploy changes to your application.
-
-You can find your API Gateway Endpoint URL in the output values displayed after deployment.
-
-## Use the SAM CLI to build and test locally
-
-Build your application with the `sam build --use-container` command.
+### Teardown
 
 ```bash
-demo-app$ sam build --use-container
+sam delete --stack-name music-api-stack
 ```
 
-The SAM CLI installs dependencies defined in `hello_world/requirements.txt`, creates a deployment package, and saves it in the `.aws-sam/build` folder.
+**Note:** The S3 bucket must be emptied before stack deletion (CloudFormation cannot delete non-empty buckets).
 
-Test a single function by invoking it directly with a test event. An event is a JSON document that represents the input that the function receives from the event source. Test events are included in the `events` folder in this project.
+---
 
-Run functions locally and invoke them with the `sam local invoke` command.
+## Troubleshooting
 
-```bash
-demo-app$ sam local invoke HelloWorldFunction --event events/event.json
-```
+| Issue | Fix |
+|-------|-----|
+| `sam build` fails on mutagen | Ensure Docker is running; use `--use-container` |
+| Presigned URLs return 403 | Check IAM permissions and S3 bucket policy; verify `eu-north-1` region in S3 client config (`audio/generate_presigned_url_download.py:11-21`) |
+| FLAC transcode Lambda timeout | File is very large; current timeout is 300s / 2048 MB (`template.yaml:815-816`) |
+| `module 'cors_utils' not found` | Ensure `UtilsLayer` is attached to the function in `template.yaml` |
+| DynamoDB `Decimal` serialization error | All handlers should use `_DecimalEncoder` from `cors_utils` (`utils/python/cors_utils.py:4-9`) |
+| Transcode doesn't update DB | The S3 upload must include `x-amz-meta-trackid` in object metadata (`transcode/transcode.py:46-48`) |
+| `sam local start-api` is slow | Already using `warm_containers = "EAGER"` (`samconfig.toml:34`) |
 
-The SAM CLI can also emulate your application's API. Use the `sam local start-api` to run the API locally on port 3000.
+---
 
-```bash
-demo-app$ sam local start-api
-demo-app$ curl http://localhost:3000/
-```
+## Further Documentation
 
-The SAM CLI reads the application template to determine the API's routes and the functions that they invoke. The `Events` property on each function's definition includes the route and method for each path.
-
-```yaml
-      Events:
-        HelloWorld:
-          Type: Api
-          Properties:
-            Path: /hello
-            Method: get
-```
-
-## Add a resource to your application
-The application template uses AWS Serverless Application Model (AWS SAM) to define application resources. AWS SAM is an extension of AWS CloudFormation with a simpler syntax for configuring common serverless application resources such as functions, triggers, and APIs. For resources not included in [the SAM specification](https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md), you can use standard [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-template-resource-type-ref.html) resource types.
-
-## Fetch, tail, and filter Lambda function logs
-
-To simplify troubleshooting, SAM CLI has a command called `sam logs`. `sam logs` lets you fetch logs generated by your deployed Lambda function from the command line. In addition to printing the logs on the terminal, this command has several nifty features to help you quickly find the bug.
-
-`NOTE`: This command works for all AWS Lambda functions; not just the ones you deploy using SAM.
-
-```bash
-demo-app$ sam logs -n HelloWorldFunction --stack-name "demo-app" --tail
-```
-
-You can find more information and examples about filtering Lambda function logs in the [SAM CLI Documentation](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-logging.html).
-
-## Tests
-
-Tests are defined in the `tests` folder in this project. Use PIP to install the test dependencies and run tests.
-
-```bash
-demo-app$ pip install -r tests/requirements.txt --user
-# unit test
-demo-app$ python -m pytest tests/unit -v
-# integration test, requiring deploying the stack first.
-# Create the env variable AWS_SAM_STACK_NAME with the name of the stack we are testing
-demo-app$ AWS_SAM_STACK_NAME="demo-app" python -m pytest tests/integration -v
-```
-
-## Cleanup
-
-To delete the sample application that you created, use the AWS CLI. Assuming you used your project name for the stack name, you can run the following:
-
-```bash
-sam delete --stack-name "demo-app"
-```
-
-## Resources
-
-See the [AWS SAM developer guide](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/what-is-sam.html) for an introduction to SAM specification, the SAM CLI, and serverless application concepts.
-
-Next, you can use AWS Serverless Application Repository to deploy ready to use Apps that go beyond hello world samples and learn how authors developed their applications: [AWS Serverless Application Repository main page](https://aws.amazon.com/serverless/serverlessrepo/)
+- [Architecture](docs/ARCHITECTURE.md) - System design, request lifecycle, Mermaid diagrams
+- [API Reference](docs/API_REFERENCE.md) - Full endpoint documentation
+- [Data Model](docs/DATA_MODEL.md) - DynamoDB schema, entities, indexes
+- [LLM Handoff](docs/LLM_HANDOFF.md) - Quick-start brief for AI assistants or new developers

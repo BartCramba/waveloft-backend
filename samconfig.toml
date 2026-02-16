@@ -4,6 +4,7 @@ version = 0.1
 
 [default.global.parameters]
 stack_name = "demo-app"
+region = "eu-north-1"
 
 [default.build.parameters]
 cached = true
@@ -18,7 +19,7 @@ confirm_changeset = true
 resolve_s3 = true
 s3_prefix = "music-api-stack"
 region = "eu-north-1"
-profile = "admin-user"
+profile = "pablito"
 image_repositories = []
 stack_name = "music-api-stack"
 disable_rollback = false

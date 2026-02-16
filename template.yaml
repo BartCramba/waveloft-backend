@@ -557,6 +557,7 @@ Resources:
                 Action:
                   - dynamodb:Query
                   - dynamodb:GetItem
+                  - dynamodb:Scan
                 Resource: !GetAtt TracksTable.Arn
               # S3 presign requires GetObject permission
               - Effect: Allow
